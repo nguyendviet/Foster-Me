@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes)=>{
-    var Parents = sequelize.define('Parents', {
+    var Parent = sequelize.define('Parent', {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -13,6 +13,13 @@ module.exports = (sequelize, DataTypes)=>{
             validate: {
               isEmail: true
             }
+        },
+        password: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                len: [4]
+              }
         },
         address: {
             type: DataTypes.STRING,
@@ -40,6 +47,6 @@ module.exports = (sequelize, DataTypes)=>{
         }
     });
   
-    return Parents;
+    return Parent;
 };
   
