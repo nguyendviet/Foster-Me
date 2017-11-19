@@ -8,10 +8,16 @@ module.exports = (app)=>{
             email: req.body.email,
             password: req.body.password,
             address: req.body.address,
-            phone: req.body.phone
+            phone: req.body.phone,
+            cat: req.body.cat,
+            dog: req.body.dog
         })
         .then((result)=>{
-            res.redirect('/');
+            console.log('\n==============================\n');
+            console.log(JSON.stringify(result));
+            console.log('\nid got: ' + result.id);
+            var newUserId = result.id;
+            res.redirect('/user/' + newUserId);
         });
     });
 };

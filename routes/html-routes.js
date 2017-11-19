@@ -6,9 +6,18 @@ module.exports = (app)=>{
     });
 
     app.get('/user/:id', (req, res)=>{
-        var userInfo = {
-            data: userName
-        };
-        res.render('user', userInfo);
+        db.Parent.findAll({
+            where: {
+                id: req.params.id
+            }
+        }).then((user)=>{
+            console.log(JSON.stringify(user));
+            console.log('\nuser name: ' + user[0].name);
+            var userName = user[0].name;
+            var userObj = {
+                name: userName
+            }
+            res.render('user', userObj);
+        });
     });
 };
