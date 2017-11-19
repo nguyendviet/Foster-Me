@@ -1,0 +1,31 @@
+{
+  "name": "foster-me",
+  "version": "1.0.0",
+  "description": "an app connects animal shelters with potential foster parents",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nguyendviet/Foster-Me.git"
+  },
+  "keywords": [
+    "gwu",
+    "project",
+    "fosterme"
+  ],
+  "author": "Viet Nguyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nguyendviet/Foster-Me/issues"
+  },
+  "homepage": "https://github.com/nguyendviet/Foster-Me#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "express-handlebars": "^3.0.0",
+    "mysql2": "^1.5.0",
+    "sequelize": "^4.22.8"
+  }
+}
