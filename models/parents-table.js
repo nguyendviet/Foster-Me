@@ -39,11 +39,11 @@ module.exports = (sequelize, DataTypes)=>{
         },
         cat: {
             type: DataTypes.BOOLEAN,
-            defaultValue: true
+            defaultValue: false
         },
         dog: {
             type: DataTypes.BOOLEAN,
-            defaultValue: true
+            defaultValue: false
         }
     });
   
