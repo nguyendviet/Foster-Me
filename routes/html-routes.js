@@ -10,7 +10,8 @@ module.exports = (app)=>{
             where: {
                 id: req.params.id
             }
-        }).then((user)=>{
+        })
+        .then((user)=>{
             console.log(JSON.stringify(user));
             console.log('\nuser name: ' + user[0].name);
             var userName = user[0].name;
