@@ -69,8 +69,6 @@ module.exports = (app)=>{
                         
                         res.status(200).send({auth: true, token: token});
                       
-                          // return the information including token as JSON
-                          res.status(200).send({ auth: true, token: token });
                         // return res.status(200).json({message: 'you have successfully logged in'});
                     }
                 });
