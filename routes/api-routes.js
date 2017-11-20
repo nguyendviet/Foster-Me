@@ -1,5 +1,6 @@
-const db = require('../models');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const db = require('../models');
 const saltRounds = 10;
 
 module.exports = (app)=>{
@@ -24,7 +25,12 @@ module.exports = (app)=>{
                 console.log(JSON.stringify(result));
                 console.log('\nid got: ' + result.id);
                 var newUserId = result.id;
-                res.redirect('/user/' + newUserId);
+                var newUserName = result.name;
+                var newUserEmail = result.email;
+                var token = jwt.sign({id: newUserId, name: newUserName, email: newUserEmail}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
+                
+                res.status(200).send({auth: true, token: token});
+                // res.redirect('/user/' + id);
             });
         });
     });
@@ -33,28 +39,47 @@ module.exports = (app)=>{
     app.post('/login', (req, res)=>{
         var password = req.body.password;
 
+        // search database for entered email
         db.Parent.findAll({
             where: {
                 email: req.body.email
             }
-        }).then((result)=>{
+        })
+        .then((result)=>{
             
+            // if email not registered
             if (result.length === 0) {
-                return res.send('user not found');
+                return res.status(401).json({message: 'user not found'});
             }
             else {
                 var hash = result[0].password;
 
+                // compare entered password with saved password
                 bcrypt.compare(password, hash, (err, match)=>{
                     if (err) throw err;
+                    
                     if (!match) {
-                        return res.send('wrong password');
+                        return res.status(401).json({message: 'wrong password'});
                     }
                     else {
-                        return res.send('welcome!');
+                        var id = result[0].id;
+                        var name = result[0].name;
+                        var email = result[0].email;
+                        var token = jwt.sign({id: id, name: name, email: email}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
+                        
+                        res.status(200).send({auth: true, token: token});
+                      
+                          // return the information including token as JSON
+                          res.status(200).send({ auth: true, token: token });
+                        // return res.status(200).json({message: 'you have successfully logged in'});
                     }
                 });
             }
         });
+    });
+
+    // log out
+    app.get('/logout', (req, res)=>{
+        res.status(200).send({auth: false, token: null});
     });
 };
