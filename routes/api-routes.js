@@ -83,6 +83,12 @@ module.exports = (app)=>{
         // verify token
         // show user's page
         console.log(req.body.token);
+        var token = req.body.token;
+        jwt.verify(token, 'secret', (err, decoded)=>{
+            if (err) throw err;
+            console.log(decoded);
+            console.log('id got back: ' + decoded.id);
+        });
         res.redirect('/');
     });
 
