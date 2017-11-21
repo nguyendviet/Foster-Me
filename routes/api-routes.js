@@ -30,6 +30,7 @@ module.exports = (app)=>{
                 var token = jwt.sign({id: newUserId, name: newUserName, email: newUserEmail}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
                 
                 res.status(200).send({auth: true, token: token});
+                // var id = result.id;
                 // res.redirect('/user/' + id);
             });
         });
@@ -65,6 +66,7 @@ module.exports = (app)=>{
                         var id = result[0].id;
                         var name = result[0].name;
                         var email = result[0].email;
+
                         var token = jwt.sign({id: id, name: name, email: email}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
                         
                         res.status(200).send({auth: true, token: token});

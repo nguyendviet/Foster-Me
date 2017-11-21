@@ -1,11 +1,15 @@
 const db = require('../models');
+const verify = require('./verify.js');
 
 module.exports = (app)=>{
     app.get('/', (req, res)=>{
         res.render('index');
     });
 
+
     app.get('/user/:id', (req, res)=>{
+        
+
         db.Parent.findAll({
             where: {
                 id: req.params.id
