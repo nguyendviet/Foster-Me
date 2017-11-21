@@ -1,6 +1,7 @@
 const express = require('express');
 const bParse = require('body-parser');
 const eHandle = require('express-handlebars');
+const jwt = require('jsonwebtoken');
 // use models to sync data
 const db = require('./models');
 // set up express

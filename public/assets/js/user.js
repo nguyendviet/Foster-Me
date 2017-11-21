@@ -2,7 +2,6 @@ $(()=>{
     $('.btn-signup').on('click', (e)=>{
         e.preventDefault();
 
-        console.log('clicked');
         var cat = false;
         var dog = false;
 
@@ -24,16 +23,24 @@ $(()=>{
             dog: dog
         };
 
-        console.log(newUser);
-
         $.ajax({
             url: '/signup',
             method: 'POST',
             data: newUser
         })
         .done((data)=>{
-            console.log('got data');
             console.log(data);
+            console.log(data.token);
+            var data = {
+                token: data.token
+            };
+            $.ajax({
+                url: '/user',
+                method: 'POST',
+                data: data
+            }).done((data)=>{
+                console.log('done');
+            });
         });
     });
 });

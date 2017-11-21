@@ -27,7 +27,7 @@ module.exports = (app)=>{
                 var newUserId = result.id;
                 var newUserName = result.name;
                 var newUserEmail = result.email;
-                var token = jwt.sign({id: newUserId, name: newUserName, email: newUserEmail}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
+                var token = jwt.sign({id: newUserId, name: newUserName}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
                 
                 res.status(200).send({auth: true, token: token});
                 // var id = result.id;
@@ -78,8 +78,16 @@ module.exports = (app)=>{
         });
     });
 
+    // user page
+    app.post('/user', (req, res)=>{
+        // verify token
+        // show user's page
+        console.log(req.body.token);
+        res.redirect('/');
+    });
+
     // log out
-    app.get('/logout', (req, res)=>{
+    app.post('/logout', (req, res)=>{
         res.status(200).send({auth: false, token: null});
     });
 };
