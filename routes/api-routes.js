@@ -215,4 +215,36 @@ module.exports = (app)=>{
     app.post('/logout', (req, res)=>{
         res.redirect('/');
     });
+
+    // delete account
+    app.post('/delete', (req, res)=>{
+
+        db.Parent.destroy({
+            where: {
+                email: req.body.email
+            }
+        })
+        .then((parent)=>{
+            if (parent === 0) {
+                db.Shelter.destroy({
+                    where: {
+                        email: req.body.email
+                    }
+                })
+                .then((shelter)=>{
+                    console.log('shelter account deleted');
+                    // res.redirect('/');
+                    // res.send({message: 'shelter account deleted'});
+                    res.redirect('/deleted');
+                });
+            }
+            else {
+                console.log('result from delete request: ' + parent);
+                console.log('parent account deleted');
+                // res.redirect('/');
+                // res.send({message: 'parent account deleted'});
+                res.redirect('/deleted');
+            }
+        });
+    })
 };

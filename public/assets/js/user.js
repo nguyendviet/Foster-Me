@@ -1,7 +1,5 @@
 $(()=>{
 
-    var userToken;
-
     $('.btn-parent').on('click', ()=>{
         // show signup form to parent
         $('.signUp').show();
@@ -186,10 +184,7 @@ $(()=>{
         });
     });
 
-    $('.btn-delete-account').on('click', ()=>{
-        console.log('token ready to send delete request: ' + userToken);
-    });
-
+    // logout
     $('.btn-logout').on('click', ()=>{
         console.log('logout clicked');
 
@@ -199,6 +194,28 @@ $(()=>{
         })
         .done((content)=>{
             console.log('logged out');
+            $('body').html(content);
+        });
+    });
+
+    // delete account
+    $('.btn-delete-account').on('click', ()=>{
+        console.log('delete account clicked');
+        var email = $('.thisEmail').data('email');
+        var deleteObj = {
+            email: email
+        }
+
+        console.log(email);
+
+        $.ajax({
+            url: '/delete',
+            method: 'POST',
+            data: deleteObj
+        })
+        .done((content)=>{
+            console.log('account deleted');
+            console.log(content);
             $('body').html(content);
         });
     });

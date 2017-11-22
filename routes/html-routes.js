@@ -53,8 +53,11 @@ module.exports = (app)=>{
                             }
                         }).then((shelter)=>{
                             var shelterName = shelter[0].name;
+                            var shelterEmail = shelter[0].email;
+
                             var userObj = {
-                                name: shelterName
+                                name: shelterName,
+                                email: shelterEmail
                             }
                             res.render('user', userObj);
                         });
@@ -63,8 +66,10 @@ module.exports = (app)=>{
                         console.log(JSON.stringify(parent));
                         console.log('\nuser name: ' + parent[0].name);
                         var parentName = parent[0].name;
+                        var parentEmail = parent[0].email;
                         var userObj = {
-                            name: parentName
+                            name: parentName,
+                            email: parentEmail
                         }
                         res.render('user', userObj);
                     }
@@ -75,5 +80,9 @@ module.exports = (app)=>{
 
     app.get('/error', (req, res)=>{
         res.render('error');
+    });
+
+    app.get('/deleted', (req, res)=>{
+        res.render('deleted');
     });
 };
