@@ -45,31 +45,34 @@ $(()=>{
                 method: 'POST',
                 data: newUser
             })
-            .done((signupData)=>{
+            .done((content)=>{
                 // when successfully signed up, sign in automatically
-                console.log(signupData);
-                
+                console.log(content);
+
+                console.log('should be in user page now.');
+                $('body').html(content);
+
                 // send login request with new user's email and password
-                $.ajax({
-                    url: '/login',
-                    method: 'POST',
-                    data: signupData,
-                    headers: {
-                        "Authorization": "Basic " + btoa(signupData.email + ':' + signupData.password)
-                    }
-                }).done((result)=>{
-                    console.log(result);
-                    console.log('\nafter login request');
-                    // send redirect request to right user's page with login token received
-                    $.ajax({
-                        url: '/user/' + result.id,
-                        headers: {token: result.token}
-                    })
-                    .done((content)=>{
-                        // replace content with page rendered from server
-                        $('body').html(content);
-                    });
-                });
+                // $.ajax({
+                //     url: '/login',
+                //     method: 'POST',
+                //     data: signupData,
+                //     headers: {
+                //         "Authorization": "Basic " + btoa(signupData.email + ':' + signupData.password)
+                //     }
+                // }).done((result)=>{
+                //     console.log(result);
+                //     console.log('\nafter login request');
+                //     // send redirect request to right user's page with login token received
+                //     $.ajax({
+                //         url: '/user/' + result.id,
+                //         headers: {token: result.token}
+                //     })
+                //     .done((content)=>{
+                //         // replace content with page rendered from server
+                //         $('body').html(content);
+                //     });
+                // });
             });
         }
     });
@@ -99,8 +102,8 @@ $(()=>{
 
             // send redirect request to right user with login token received
             $.ajax({
-                url: '/user/' + result.id,
-                headers: {token: result.token}
+                url: '/user/' + result.token
+                // headers: {token: result.token}
             })
             .done((content)=>{
                 // replace content with page rendered from server

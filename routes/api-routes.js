@@ -18,7 +18,7 @@ module.exports = (app)=>{
         .then((result)=>{
             // if found matching email
             if (result.length !== 0) {
-                res.send({message: 'Email already registered.'});
+                return res.send({message: 'Email already registered.'});
             }
             // if email not registered
             else {
@@ -42,15 +42,19 @@ module.exports = (app)=>{
                         console.log('\n==============================\n');
                         console.log(JSON.stringify(result));
                         console.log('\nid got: ' + result.id);
+
+                        var token = jwt.sign({id: result.id, name: result.name}, 'secret', {expiresIn: '1h'});
+
+                        res.redirect('/user/' + token);
         
                         // create login details
-                        var userInfo = {
-                            email: result.email,
-                            password: result.password
-                        };
+                        // var userInfo = {
+                        //     email: result.email,
+                        //     password: result.password
+                        // };
         
-                        // send new user's info back to client side to login
-                        res.json(userInfo);
+                        // // send new user's info back to client side to login
+                        // res.json(userInfo);
         
         
                         // var newUserId = result.id;

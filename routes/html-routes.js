@@ -8,15 +8,17 @@ module.exports = (app)=>{
     });
 
 
-    app.get('/user/:id', (req, res)=>{
+    app.get('/user/:token', (req, res)=>{
         
-        console.log('request got: ' + req);
-        console.log('headers ' + JSON.stringify(req.headers));
-        console.log('\nnow this is the headers token: ' + req.headers.token);
+        // console.log('request got: ' + req);
+        // console.log('headers ' + JSON.stringify(req.headers));
+        // console.log('\nnow this is the headers token: ' + req.headers.token);
         // console.log('request params: ' + JSON.stringify(req.params));
         // console.log('token: ' + req.params.token);
 
-        var token = req.headers.token;
+        // var token = req.headers.token;
+
+        var token = req.params.token;
 
         // check if token exists
         if (!token) {
