@@ -211,16 +211,17 @@ $(()=>{
             $('.notice').html('<div class="alert alert-danger" role="alert">Your new passwords don\'t match.</div>');
         }
         else {
-            $('.notice').html('<div class="alert alert-success" role="alert">Your new password has been successfully saved.</div>');
+            // $('.notice').html('<div class="alert alert-success" role="alert">Your new password has been successfully saved.</div>');
             console.log('save new password');
-            var userType = $('.thisUser').data('userType');
+            var userType = $('.thisUser').data('usertype');
             var userId = $('.thisUser').data('id');
-
             var newPassObj = {
                 userType: userType,
                 id: userId,
                 password: newPassword
             }
+
+            console.log(newPassObj);
 
             $.ajax({
                 url: '/user',
@@ -242,20 +243,23 @@ $(()=>{
     // confirm delete account
     $('.btn-confirm-delete-account').on('click', ()=>{
         console.log('delete account clicked');
-        var userType = $('.thisUser').data('userType');
+        var userType = $('.thisUser').data('usertype');
         var userId = $('.thisUser').data('id');
         var deleteObj = {
             userType: userType,
             id: userId
         }
 
+        // send delete request to server
         $.ajax({
             url: '/user',
             method: 'DELETE',
             data: deleteObj
         })
         .done((confirm)=>{
+            // if get confirm == 1
             if(confirm) {
+                // send request to render deleted page
                 $.ajax({
                     url: '/deleted',
                     method: 'GET'
@@ -265,7 +269,7 @@ $(()=>{
                 });
             }
             else {
-                console.log('there is an error trying to delete account');
+                $('.notice').html('<div class="alert alert-danger" role="alert">There\'s an error. Please try again.</div>');
             }
         });
     });

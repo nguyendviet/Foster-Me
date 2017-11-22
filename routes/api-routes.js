@@ -214,39 +214,47 @@ module.exports = (app)=>{
 
     // change password
     app.put('/user', (req, res)=>{
-
+        var userType = req.body.userType;
+        var userId = req.body.id;
         var newPassword = req.body.password;
 
+        // encrypt password
         bcrypt.hash(newPassword, saltRounds, (err, hash)=>{
             if (err) throw err;
-            
-        });
 
-        db.Parent.update(req.body.password,{
-            where: {
-                email: req.body.email
-            }
-        })
-        .then((parent)=>{
-            if (parent === 0) {
-                db.Shelter.destroy({
-                    where: {
-                        email: req.body.email
+            console.log('\nuser type: ' + userType);
+            console.log('\nreq body: ' + JSON.stringify(req.body));
+            
+            // save encrypted password to the right user
+            if (userType == 'parent') {
+                db.Parent.update(
+                    {
+                        password: hash
+                    },
+                    {
+                        where: {
+                            id: userId
+                        }
                     }
-                })
-                .then((shelter)=>{
-                    console.log('shelter account deleted');
-                    // res.redirect('/');
-                    // res.send({message: 'shelter account deleted'});
-                    res.redirect('/deleted');
+                )
+                .then((parent)=>{
+                    res.json(parent);
                 });
             }
             else {
-                console.log('result from delete request: ' + parent);
-                console.log('parent account deleted');
-                // res.redirect('/');
-                // res.send({message: 'parent account deleted'});
-                res.redirect('/deleted');
+                db.Shelter.update(
+                    {
+                        password: hash
+                    },
+                    {
+                        where: {
+                            id: userId
+                        }
+                    }
+                )
+                .then((shelter)=>{
+                    res.json(shelter);
+                })
             }
         });
     });
