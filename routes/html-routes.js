@@ -19,10 +19,10 @@ module.exports = (app)=>{
             jwt.verify(token, 'secret', (err, decoded)=>{
                 if (err) throw err;
 
-                var userType = decoded.userType;
+                var usertype = decoded.usertype;
 
                 // user is a parent
-                if (userType == 'parent') {
+                if (usertype == 'parent') {
                     db.Parent.findAll({
                         where: {
                             id: decoded.id
@@ -32,7 +32,7 @@ module.exports = (app)=>{
                         var parentId = parent[0].id;
                         var parentName = parent[0].name;
                         var userObj = {
-                            userType: 'parent',
+                            usertype: 'parent',
                             id: parentId,
                             name: parentName
                         }
@@ -50,7 +50,7 @@ module.exports = (app)=>{
                         var shelterId = shelter[0].id;
                         var shelterName = shelter[0].name;
                         var userObj = {
-                            userType: 'shelter',
+                            usertype: 'shelter',
                             id: shelterId,
                             name: shelterName
                         }

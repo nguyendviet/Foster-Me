@@ -49,7 +49,7 @@ $(()=>{
         else {
             // create new user object with details
             var newUser = {
-                userType: 'parent',
+                usertype: 'parent',
                 name: name,
                 email: email,
                 password: password,
@@ -96,7 +96,7 @@ $(()=>{
         else {
             // create new user object with details
             var newUser = {
-                userType: 'shelter',
+                usertype: 'shelter',
                 name: name,
                 email: email,
                 password: password,
@@ -186,10 +186,10 @@ $(()=>{
         }
         // if entered passwords match
         else {
-            var userType = $('.thisUser').data('usertype');
+            var usertype = $('.thisUser').data('usertype');
             var userId = $('.thisUser').data('id');
             var newPassObj = {
-                userType: userType,
+                usertype: usertype,
                 id: userId,
                 password: newPassword
             }
@@ -215,10 +215,10 @@ $(()=>{
     // confirm delete account
     $('.btn-confirm-delete-account').on('click', ()=>{
         console.log('delete account clicked');
-        var userType = $('.thisUser').data('usertype');
+        var usertype = $('.thisUser').data('usertype');
         var userId = $('.thisUser').data('id');
         var deleteObj = {
-            userType: userType,
+            usertype: usertype,
             id: userId
         }
 

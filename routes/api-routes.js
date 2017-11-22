@@ -6,10 +6,12 @@ const saltRounds = 10;
 module.exports = (app)=>{
     // sign up - parent
     app.post('/signup', (req, res)=>{
-        var userType = req.body.userType;
+        var usertype = req.body.usertype;
+        console.log('\n==================\nuser type sign up: ' + JSON.stringify(req.body));
+        console.log('\n==========\nusertype: ' + usertype);
 
         // if user sign up as parent
-        if (userType == 'parent') {
+        if (usertype == 'parent') {
             // look in database if email registered
             db.Parent.findAll({
                 where: {
@@ -40,7 +42,7 @@ module.exports = (app)=>{
                             dog: req.body.dog
                         })
                         .then((result)=>{
-                            var token = jwt.sign({userType: 'parent', id: result.id}, 'secret', {expiresIn: '1h'});
+                            var token = jwt.sign({usertype: 'parent', id: result.id}, 'secret', {expiresIn: '1h'});
                             // response with token
                             res.redirect('/user/' + token);
                         });
@@ -78,7 +80,7 @@ module.exports = (app)=>{
                             phone: req.body.phone
                         })
                         .then((result)=>{
-                            var token = jwt.sign({userType: 'shelter', id: result.id}, 'secret', {expiresIn: '1h'});
+                            var token = jwt.sign({usertype: 'shelter', id: result.id}, 'secret', {expiresIn: '1h'});
                             // response with token
                             res.redirect('/user/' + token);
                         });
@@ -124,7 +126,7 @@ module.exports = (app)=>{
                             }
                             else {
                                 var id = shelter[0].id;
-                                var token = jwt.sign({userType: 'shelter', id: id}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
+                                var token = jwt.sign({usertype: 'shelter', id: id}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
                                 
                                 // send token to client side to have secure connection before redirect to user's page
                                 res.status(200).send({auth: true, token: token});
@@ -146,7 +148,7 @@ module.exports = (app)=>{
                     }
                     else {
                         var id = parent[0].id;
-                        var token = jwt.sign({userType: 'parent', id: id}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
+                        var token = jwt.sign({usertype: 'parent', id: id}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
                         
                         // send token to client side to have secure connection before redirect to user's page
                         res.status(200).send({auth: true, token: token});
@@ -163,7 +165,7 @@ module.exports = (app)=>{
 
     // change password
     app.put('/user', (req, res)=>{
-        var userType = req.body.userType;
+        var usertype = req.body.usertype;
         var userId = req.body.id;
         var newPassword = req.body.password;
 
@@ -172,7 +174,7 @@ module.exports = (app)=>{
             if (err) throw err;
             
             // save encrypted password to the right user
-            if (userType == 'parent') {
+            if (usertype == 'parent') {
                 db.Parent.update(
                     {
                         password: hash
@@ -205,9 +207,9 @@ module.exports = (app)=>{
 
     // delete account
     app.delete('/user', (req, res)=>{
-        var userType = req.body.userType;
+        var usertype = req.body.usertype;
 
-        if (userType == 'parent') {
+        if (usertype == 'parent') {
             console.log('look in parent table to delete user');
             db.Parent.destroy({
                 where: {
