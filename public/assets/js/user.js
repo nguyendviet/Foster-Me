@@ -52,15 +52,13 @@ $(()=>{
                 console.log('this is login data token: ' + loginData.token);
                 // send redirect request to right user with login token received
                 $.ajax({
-                    url: '/user/' + loginData.id + loginData.token
+                    url: '/user/' + loginData.id,
+                    headers: {token: loginData.token}
                 })
-                .done((result)=>{
+                .done((content)=>{
                     console.log('you can login now');
-                    console.log(result);
-
-                    // this could replace the whole page
-                    // var newDoc = document.open("text/html", "replace");
-                    // newDoc.write(result);
+                    // replace content with page rendered from server
+                    $('body').html(content);
                 });
             });
         });
