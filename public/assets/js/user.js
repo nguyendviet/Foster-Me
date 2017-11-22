@@ -111,7 +111,6 @@ $(()=>{
                 data: newUser,
                 error: (err)=>{
                     message = err.responseJSON.message;
-                    console.log(err);
                     $('.signup-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');
                 }
             })
@@ -214,7 +213,6 @@ $(()=>{
 
     // confirm delete account
     $('.btn-confirm-delete-account').on('click', ()=>{
-        console.log('delete account clicked');
         var usertype = $('.thisUser').data('usertype');
         var userId = $('.thisUser').data('id');
         var deleteObj = {

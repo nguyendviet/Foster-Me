@@ -7,8 +7,6 @@ module.exports = (app)=>{
     // sign up - parent
     app.post('/signup', (req, res)=>{
         var usertype = req.body.usertype;
-        console.log('\n==================\nuser type sign up: ' + JSON.stringify(req.body));
-        console.log('\n==========\nusertype: ' + usertype);
 
         // if user sign up as parent
         if (usertype == 'parent') {
@@ -210,7 +208,6 @@ module.exports = (app)=>{
         var usertype = req.body.usertype;
 
         if (usertype == 'parent') {
-            console.log('look in parent table to delete user');
             db.Parent.destroy({
                 where: {
                     id: req.body.id
@@ -221,7 +218,6 @@ module.exports = (app)=>{
             })
         }
         else {
-            console.log('look in shelter table to delete user');
             db.Shelter.destroy({
                 where: {
                     id: req.body.id
