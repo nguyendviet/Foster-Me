@@ -7,8 +7,11 @@ module.exports = (app)=>{
     });
 
 
-    app.get('/user/:id', (req, res)=>{
+    app.get('/user/:id:token', (req, res)=>{
         
+        console.log('request got: ' + req);
+        console.log('request params: ' + JSON.stringify(req.params));
+        console.log('token: ' + req.params.token);
 
         db.Parent.findAll({
             where: {

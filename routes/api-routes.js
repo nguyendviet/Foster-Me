@@ -38,6 +38,7 @@ module.exports = (app)=>{
 
     // login
     app.post('/login', (req, res)=>{
+
         var password = req.body.password;
 
         // search database for entered email
@@ -69,7 +70,7 @@ module.exports = (app)=>{
 
                         var token = jwt.sign({id: id, name: name, email: email}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
                         
-                        res.status(200).send({auth: true, token: token});
+                        res.status(200).send({auth: true, token: token, id: id});
                       
                         // return res.status(200).json({message: 'you have successfully logged in'});
                     }
@@ -88,8 +89,12 @@ module.exports = (app)=>{
             if (err) throw err;
             console.log(decoded);
             console.log('id got back: ' + decoded.id);
+            res.send({
+                url:'/user/' + decoded.id,
+                token: token
+            });
         });
-        res.redirect('/');
+        
     });
 
     // log out

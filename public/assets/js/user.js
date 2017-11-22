@@ -23,24 +23,50 @@ $(()=>{
             dog: dog
         };
 
+        // send signup request
         $.ajax({
             url: '/signup',
             method: 'POST',
             data: newUser
         })
-        .done((data)=>{
-            console.log(data);
-            console.log(data.token);
+        .done((signupData)=>{
+            console.log(signupData);
+            console.log(signupData.token);
+            // when successfully signed up, get token from server
             var data = {
-                token: data.token
+                token: signupData.token,
+                email: newUser.email,
+                password: newUser.password
             };
+
+            // send login request with signup token received
             $.ajax({
-                url: '/user',
+                url: '/login',
                 method: 'POST',
                 data: data
-            }).done((data)=>{
+            }).done((loginData)=>{
                 console.log('done');
+                console.log(loginData);
+                // window.location.href = redirect.url;
+
+                console.log('this is login data token: ' + loginData.token);
+                // send redirect request to right user with login token received
+                $.ajax({
+                    url: '/user/' + loginData.id + loginData.token
+                })
+                .done((result)=>{
+                    console.log('you can login now');
+                    console.log(result);
+
+                    // this could replace the whole page
+                    // var newDoc = document.open("text/html", "replace");
+                    // newDoc.write(result);
+                });
             });
         });
     });
+
+    function login(token) {
+
+    }
 });
