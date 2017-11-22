@@ -200,6 +200,12 @@ $(()=>{
 
     // delete account
     $('.btn-delete-account').on('click', ()=>{
+        $('.btn-delete-account').hide();
+        $('.confirm-delete').show();
+    });
+
+    // confirm delete account
+    $('.btn-confirm-delete-account').on('click', ()=>{
         console.log('delete account clicked');
         var email = $('.thisEmail').data('email');
         var deleteObj = {
@@ -218,5 +224,11 @@ $(()=>{
             console.log(content);
             $('body').html(content);
         });
+    });
+
+    // cancel delete account
+    $('.btn-cancel-delete-account').on('click', ()=>{
+        $('.btn-delete-account').show();
+        $('.confirm-delete').hide();
     });
 });
