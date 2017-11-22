@@ -1,4 +1,7 @@
 $(()=>{
+
+    var userToken;
+
     $('.btn-parent').on('click', ()=>{
         // show signup form to parent
         $('.signUp').show();
@@ -145,10 +148,10 @@ $(()=>{
         }
     });
 
-    // log in as parent
+    // log in
     $('.btn-login').on('click', (e)=>{
         e.preventDefault();
-        console.log('clicked');
+        console.log('login clicked');
 
         var user = {
             email: $('.email-login').val().trim(),
@@ -166,18 +169,37 @@ $(()=>{
             }
         })
         .done((result)=>{
-            console.log('done');
-            console.log(result);
+            console.log('token from login request: ' + result.token);
+            var token = result.token;
+            userToken = token;
 
             // send redirect request to right user with login token received
             $.ajax({
-                url: '/user/' + result.token
+                url: '/user/' + token
                 // headers: {token: result.token}
             })
             .done((content)=>{
                 // replace content with page rendered from server
                 $('body').html(content);
+                console.log('run map function here');
             });
+        });
+    });
+
+    $('.btn-delete-account').on('click', ()=>{
+        console.log('token ready to send delete request: ' + userToken);
+    });
+
+    $('.btn-logout').on('click', ()=>{
+        console.log('logout clicked');
+
+        $.ajax({
+            url: '/logout',
+            method: 'POST'
+        })
+        .done((content)=>{
+            console.log('logged out');
+            $('body').html(content);
         });
     });
 });
