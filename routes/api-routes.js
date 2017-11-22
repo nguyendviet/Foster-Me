@@ -43,7 +43,7 @@ module.exports = (app)=>{
                         console.log(JSON.stringify(result));
                         console.log('\nid got: ' + result.id);
 
-                        var token = jwt.sign({id: result.id, name: result.name, email: result.email}, 'secret', {expiresIn: '1h'});
+                        var token = jwt.sign({userType: 'parent', id: result.id}, 'secret', {expiresIn: '1h'});
 
                         res.redirect('/user/' + token);
         
@@ -108,7 +108,7 @@ module.exports = (app)=>{
                         console.log(JSON.stringify(result));
                         console.log('\nid got: ' + result.id);
 
-                        var token = jwt.sign({id: result.id, name: result.name, email: result.email}, 'secret', {expiresIn: '1h'});
+                        var token = jwt.sign({userType: 'shelter', id: result.id}, 'secret', {expiresIn: '1h'});
 
                         res.redirect('/user/' + token);
                     });
@@ -117,7 +117,7 @@ module.exports = (app)=>{
         });
     });
 
-    // login for parent
+    // login
     app.post('/login', (req, res)=>{
         var password = req.body.password;
 
@@ -154,9 +154,7 @@ module.exports = (app)=>{
                             else {
                                 var id = shelter[0].id;
                                 var name = shelter[0].name;
-                                var email = shelter[0].email;
-        
-                                var token = jwt.sign({id: id, name: name, email: email}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
+                                var token = jwt.sign({userType: 'shelter', id: id}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
                                 
                                 // send token to client side to have secure connection before redirect to user's page
                                 res.status(200).send({auth: true, token: token, name: name});
@@ -179,9 +177,7 @@ module.exports = (app)=>{
                     else {
                         var id = parent[0].id;
                         var name = parent[0].name;
-                        var email = parent[0].email;
-
-                        var token = jwt.sign({id: id, name: name, email: email}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
+                        var token = jwt.sign({userType: 'parent', id: id}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
                         
                         // send token to client side to have secure connection before redirect to user's page
                         res.status(200).send({auth: true, token: token, name: name});
@@ -216,10 +212,17 @@ module.exports = (app)=>{
         res.redirect('/');
     });
 
-    // delete account
-    app.post('/delete', (req, res)=>{
+    // change password
+    app.put('/user', (req, res)=>{
 
-        db.Parent.destroy({
+        var newPassword = req.body.password;
+
+        bcrypt.hash(newPassword, saltRounds, (err, hash)=>{
+            if (err) throw err;
+            
+        });
+
+        db.Parent.update(req.body.password,{
             where: {
                 email: req.body.email
             }
@@ -246,5 +249,33 @@ module.exports = (app)=>{
                 res.redirect('/deleted');
             }
         });
+    });
+
+    // delete account
+    app.delete('/user', (req, res)=>{
+        var userType = req.body.userType;
+
+        if (userType == 'parent') {
+            console.log('look in parent table to delete user');
+            db.Parent.destroy({
+                where: {
+                    id: req.body.id
+                }
+            })
+            .then((confirm)=>{
+                res.json(confirm);
+            })
+        }
+        else {
+            console.log('look in shelter table to delete user');
+            db.Shelter.destroy({
+                where: {
+                    id: req.body.id
+                }
+            })
+            .then((confirm)=>{
+                res.json(confirm);
+            });
+        }
     })
 };

@@ -7,73 +7,60 @@ module.exports = (app)=>{
         res.render('index');
     });
 
-
     app.get('/user/:token', (req, res)=>{
-        
-        // console.log('request got: ' + req);
-        // console.log('headers ' + JSON.stringify(req.headers));
-        // console.log('\nnow this is the headers token: ' + req.headers.token);
-        // console.log('request params: ' + JSON.stringify(req.params));
-        // console.log('token: ' + req.params.token);
-
-        // var token = req.headers.token;
-
         var token = req.params.token;
 
         // check if token exists
         if (!token) {
-            // res.status(401).send({message: 'Unauthorised connection.'});
             res.status(401).redirect('/error');
         }
         else {
-            // res.status(200).send({message: 'Welcome!'});
-            // search database with the provided user id
-
             // decode token
             jwt.verify(token, 'secret', (err, decoded)=>{
                 if (err) throw err;
                 console.log('\n====================\nuser-token decoded:\n');
-                console.log(decoded);
                 console.log('id decoded: ' + decoded.id);
-                console.log('email decoded: ' + decoded.email);
 
-                // search for user id in parent table
-                db.Parent.findAll({
-                    where: {
-                        email: decoded.email
-                    }
-                })
-                .then((parent)=>{
-                    // if cannot find in parent table
-                    if (parent.length === 0) {
-                        // find in shelter table
-                        db.Shelter.findAll({
-                            where: {
-                                email: decoded.email
-                            }
-                        }).then((shelter)=>{
-                            var shelterName = shelter[0].name;
-                            var shelterEmail = shelter[0].email;
+                var userType = decoded.userType;
 
-                            var userObj = {
-                                name: shelterName,
-                                email: shelterEmail
-                            }
-                            res.render('user', userObj);
-                        });
-                    }
-                    else {
-                        console.log(JSON.stringify(parent));
-                        console.log('\nuser name: ' + parent[0].name);
+                // check the table where user belongs
+                if (userType == 'parent') {
+                    console.log('look for user in parent table');
+                    db.Parent.findAll({
+                        where: {
+                            id: decoded.id
+                        }
+                    })
+                    .then((parent)=>{
+                        var parentId = parent[0].id;
                         var parentName = parent[0].name;
-                        var parentEmail = parent[0].email;
                         var userObj = {
-                            name: parentName,
-                            email: parentEmail
+                            userType: 'parent',
+                            id: parentId,
+                            name: parentName
                         }
                         res.render('user', userObj);
-                    }
-                });
+                    });
+                }
+                else {
+                    console.log('look for user in shelter table');
+                    db.Shelter.findAll({
+                        where: {
+                            id: decoded.id
+                        }
+                    })
+                    .then((shelter)=>{
+                        var shelterId = shelter[0].id;
+                        var shelterName = shelter[0].name;
+                        
+                        var userObj = {
+                            userType: 'shelter',
+                            id: shelterId,
+                            name: shelterName
+                        }
+                        res.render('user', userObj);
+                    });
+                }
             });
         }
     });

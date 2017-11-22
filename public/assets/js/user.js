@@ -173,7 +173,8 @@ $(()=>{
 
             // send redirect request to right user with login token received
             $.ajax({
-                url: '/user/' + token
+                url: '/user/' + token,
+                method: 'GET'
                 // headers: {token: result.token}
             })
             .done((content)=>{
@@ -198,6 +199,40 @@ $(()=>{
         });
     });
 
+    // save new password
+    $('.btn-save-password').on('click', (e)=>{
+        e.preventDefault();
+
+        var newPassword = $('.password-new1').val().trim();
+        var confirmPassword = $('.password-new2').val().trim();
+
+        if (newPassword !== confirmPassword) {
+            console.log('passwords don\'t match');
+            $('.notice').html('<div class="alert alert-danger" role="alert">Your new passwords don\'t match.</div>');
+        }
+        else {
+            $('.notice').html('<div class="alert alert-success" role="alert">Your new password has been successfully saved.</div>');
+            console.log('save new password');
+            var userType = $('.thisUser').data('userType');
+            var userId = $('.thisUser').data('id');
+
+            var newPassObj = {
+                userType: userType,
+                id: userId,
+                password: newPassword
+            }
+
+            $.ajax({
+                url: '/user',
+                method: 'PUT',
+                data: newPassObj
+            })
+            .done((newpass)=>{
+                console.log(newpass);
+            })
+        }
+    });
+
     // delete account
     $('.btn-delete-account').on('click', ()=>{
         $('.btn-delete-account').hide();
@@ -207,22 +242,31 @@ $(()=>{
     // confirm delete account
     $('.btn-confirm-delete-account').on('click', ()=>{
         console.log('delete account clicked');
-        var email = $('.thisEmail').data('email');
+        var userType = $('.thisUser').data('userType');
+        var userId = $('.thisUser').data('id');
         var deleteObj = {
-            email: email
+            userType: userType,
+            id: userId
         }
 
-        console.log(email);
-
         $.ajax({
-            url: '/delete',
-            method: 'POST',
+            url: '/user',
+            method: 'DELETE',
             data: deleteObj
         })
-        .done((content)=>{
-            console.log('account deleted');
-            console.log(content);
-            $('body').html(content);
+        .done((confirm)=>{
+            if(confirm) {
+                $.ajax({
+                    url: '/deleted',
+                    method: 'GET'
+                })
+                .done((content)=>{
+                    $('body').html(content);
+                });
+            }
+            else {
+                console.log('there is an error trying to delete account');
+            }
         });
     });
 

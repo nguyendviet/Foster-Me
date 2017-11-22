@@ -1,10 +1,12 @@
 <p>Hello {{this.name}}. You have successfully logged in.</p>
-<div class="thisEmail" data-email="{{this.email}}"></div>
+<div class="thisUser" data-userType="{{this.userType}}" data-id="{{this.id}}" ></div>
 
 <button type="button" class="btn btn-warning btn-logout">Logout</button>
 
 <form>
     <p>Change password</p>
+    <div class="notice"></div>
+
     <fieldset class="form-group">
         <input type="password" name="password" placeholder="New Password" class="form-control password-new1">
     </fieldset>
@@ -13,7 +15,7 @@
     </fieldset>
 
     <fieldset class="form-group">
-        <input type="submit" name="signUp" value="Save Password" class="btn btn-success btn-signup">
+        <input type="submit" name="signUp" value="Save Password" class="btn btn-success btn-save-password">
     </fieldset>
 </form>
 
