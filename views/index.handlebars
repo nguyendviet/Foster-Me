@@ -7,7 +7,7 @@
     <button type="button" class="btn btn-info btn-shelter">Shelter</button>
 
     <form class="signUp">
-
+        <div class="signup-notice"></div>
         <fieldset class="form-group">
             <input type="text" name="name" placeholder="Name" class="form-control name-signup">
         </fieldset>
@@ -59,7 +59,7 @@
     <div>{{this.message}}</div>
     <form class="logIn">
         <h3>Log in</h3>
-
+        <div class="login-notice"></div>
         <fieldset class="form-group">
             <input type="email" name="email" placeholder="Email" class="form-control email-login">
         </fieldset>
@@ -77,7 +77,6 @@
         <fieldset class="form-group">
             <input type="hidden" name="signUp">
             <input type="submit" name="logIn" value="Log In" class="btn btn-success btn-login">
-            {{!-- <input type="submit" name="logIn" value="Log In" class="btn btn-success btn-login-shelter"> --}}
         </fieldset>
     </form>
 </div>

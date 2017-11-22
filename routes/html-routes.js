@@ -18,14 +18,11 @@ module.exports = (app)=>{
             // decode token
             jwt.verify(token, 'secret', (err, decoded)=>{
                 if (err) throw err;
-                console.log('\n====================\nuser-token decoded:\n');
-                console.log('id decoded: ' + decoded.id);
 
                 var userType = decoded.userType;
 
-                // check the table where user belongs
+                // user is a parent
                 if (userType == 'parent') {
-                    console.log('look for user in parent table');
                     db.Parent.findAll({
                         where: {
                             id: decoded.id
@@ -42,8 +39,8 @@ module.exports = (app)=>{
                         res.render('user', userObj);
                     });
                 }
+                // user is a shelter
                 else {
-                    console.log('look for user in shelter table');
                     db.Shelter.findAll({
                         where: {
                             id: decoded.id
@@ -52,7 +49,6 @@ module.exports = (app)=>{
                     .then((shelter)=>{
                         var shelterId = shelter[0].id;
                         var shelterName = shelter[0].name;
-                        
                         var userObj = {
                             userType: 'shelter',
                             id: shelterId,

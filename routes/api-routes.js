@@ -5,123 +5,94 @@ const saltRounds = 10;
 
 module.exports = (app)=>{
     // sign up - parent
-    app.post('/signup/parent', (req, res)=>{
+    app.post('/signup', (req, res)=>{
+        var userType = req.body.userType;
 
-        console.log('\nemail submitted: ' + req.body.email);
-
-        // look in database if email registered
-        db.Parent.findAll({
-            where: {
-                email: req.body.email
-            }
-        })
-        .then((result)=>{
-            // if found matching email
-            if (result.length !== 0) {
-                return res.send({message: 'Email already registered.'});
-            }
-            // if email not registered
-            else {
-                var password = req.body.password;
-                
-                // encrypt password before saving
-                bcrypt.hash(password, saltRounds, (err, hash)=>{
-                    if (err) throw err;
+        // if user sign up as parent
+        if (userType == 'parent') {
+            // look in database if email registered
+            db.Parent.findAll({
+                where: {
+                    email: req.body.email
+                }
+            })
+            .then((result)=>{
+                // if found matching email
+                if (result.length !== 0) {
+                    res.send({message: 'Your email is already registered.'});
+                }
+                // if email not registered
+                else {
+                    var password = req.body.password;
                     
-                    // save user's info into database
-                    db.Parent.create({
-                        name: req.body.name,
-                        email: req.body.email,
-                        password: hash,
-                        address: req.body.address,
-                        phone: req.body.phone,
-                        cat: req.body.cat,
-                        dog: req.body.dog
-                    })
-                    .then((result)=>{
-                        console.log('\n==============================\n');
-                        console.log(JSON.stringify(result));
-                        console.log('\nid got: ' + result.id);
-
-                        var token = jwt.sign({userType: 'parent', id: result.id}, 'secret', {expiresIn: '1h'});
-
-                        res.redirect('/user/' + token);
-        
-                        // create login details
-                        // var userInfo = {
-                        //     email: result.email,
-                        //     password: result.password
-                        // };
-        
-                        // // send new user's info back to client side to login
-                        // res.json(userInfo);
-        
-        
-                        // var newUserId = result.id;
-                        // var newUserName = result.name;
-                        // var newUserEmail = result.email;
-                        // var token = jwt.sign({id: newUserId, name: newUserName}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
+                    // encrypt password before saving
+                    bcrypt.hash(password, saltRounds, (err, hash)=>{
+                        if (err) throw err;
                         
-                        // res.status(200).send({auth: true, token: token});
-                        // var id = result.id;
-                        // res.redirect('/user/' + id);
+                        // save user's info into database
+                        db.Parent.create({
+                            name: req.body.name,
+                            email: req.body.email,
+                            password: hash,
+                            address: req.body.address,
+                            phone: req.body.phone,
+                            cat: req.body.cat,
+                            dog: req.body.dog
+                        })
+                        .then((result)=>{
+                            var token = jwt.sign({userType: 'parent', id: result.id}, 'secret', {expiresIn: '1h'});
+                            // response with token
+                            res.redirect('/user/' + token);
+                        });
                     });
-                });
-            }
-        });
-    });
-
-    // sign up - shelter
-    app.post('/signup/shelter', (req, res)=>{
-        
-        console.log('\nemail submitted: ' + req.body.email);
-
-        // look in database if email registered
-        db.Shelter.findAll({
-            where: {
-                email: req.body.email
-            }
-        })
-        .then((result)=>{
-            // if found matching email
-            if (result.length !== 0) {
-                return res.send({message: 'Email already registered.'});
-            }
-            // if email not registered
-            else {
-                var password = req.body.password;
-                
-                // encrypt password before saving
-                bcrypt.hash(password, saltRounds, (err, hash)=>{
-                    if (err) throw err;
+                }
+            });
+        }
+        // if user sign up as shelter
+        else {
+            // look in database if email registered
+            db.Shelter.findAll({
+                where: {
+                    email: req.body.email
+                }
+            })
+            .then((result)=>{
+                // if found matching email
+                if (result.length !== 0) {
+                    res.send({message: 'Your email is already registered.'});
+                }
+                // if email not registered
+                else {
+                    var password = req.body.password;
                     
-                    // save user's info into database
-                    db.Shelter.create({
-                        name: req.body.name,
-                        email: req.body.email,
-                        password: hash,
-                        address: req.body.address,
-                        phone: req.body.phone
-                    })
-                    .then((result)=>{
-                        console.log('\n==============================\n');
-                        console.log(JSON.stringify(result));
-                        console.log('\nid got: ' + result.id);
-
-                        var token = jwt.sign({userType: 'shelter', id: result.id}, 'secret', {expiresIn: '1h'});
-
-                        res.redirect('/user/' + token);
+                    // encrypt password before saving
+                    bcrypt.hash(password, saltRounds, (err, hash)=>{
+                        if (err) throw err;
+                        
+                        // save user's info into database
+                        db.Shelter.create({
+                            name: req.body.name,
+                            email: req.body.email,
+                            password: hash,
+                            address: req.body.address,
+                            phone: req.body.phone
+                        })
+                        .then((result)=>{
+                            var token = jwt.sign({userType: 'shelter', id: result.id}, 'secret', {expiresIn: '1h'});
+                            // response with token
+                            res.redirect('/user/' + token);
+                        });
                     });
-                });
-            }
-        });
+                }
+            });
+        }
     });
 
     // login
     app.post('/login', (req, res)=>{
         var password = req.body.password;
 
-        // search database for entered email
+        // search parent table for entered email
         db.Parent.findAll({
             where: {
                 email: req.body.email
@@ -138,7 +109,7 @@ module.exports = (app)=>{
                 }).then((shelter)=>{
                     // if email not registered as shelter also
                     if (shelter.length === 0) {
-                        res.status(401).send({message: 'user not found'});
+                        res.status(401).send({message: 'User not found.'});
                     }
                     // if email registered as shelter
                     else {
@@ -149,15 +120,14 @@ module.exports = (app)=>{
                             if (err) throw err;
                             
                             if (!match) {
-                                res.status(401).send({message: 'wrong password'});
+                                res.status(401).send({message: 'Wrong password.'});
                             }
                             else {
                                 var id = shelter[0].id;
-                                var name = shelter[0].name;
                                 var token = jwt.sign({userType: 'shelter', id: id}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
                                 
                                 // send token to client side to have secure connection before redirect to user's page
-                                res.status(200).send({auth: true, token: token, name: name});
+                                res.status(200).send({auth: true, token: token});
                             }
                         });
                     }
@@ -172,40 +142,19 @@ module.exports = (app)=>{
                     if (err) throw err;
                     
                     if (!match) {
-                        res.status(401).send({message: 'wrong password'});
+                        res.status(401).send({message: 'Wrong password.'});
                     }
                     else {
                         var id = parent[0].id;
-                        var name = parent[0].name;
                         var token = jwt.sign({userType: 'parent', id: id}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
                         
                         // send token to client side to have secure connection before redirect to user's page
-                        res.status(200).send({auth: true, token: token, name: name});
-                      
-                        // return res.status(200).json({message: 'you have successfully logged in'});
+                        res.status(200).send({auth: true, token: token});
                     }
                 });
             }
         });
     });
-
-    // user page
-    // app.post('/user', (req, res)=>{
-    //     // verify token
-    //     // show user's page
-    //     console.log(req.body.token);
-    //     var token = req.body.token;
-    //     jwt.verify(token, 'secret', (err, decoded)=>{
-    //         if (err) throw err;
-    //         console.log(decoded);
-    //         console.log('id got back: ' + decoded.id);
-    //         res.send({
-    //             url:'/user/' + decoded.id,
-    //             token: token
-    //         });
-    //     });
-        
-    // });
 
     // logout
     app.post('/logout', (req, res)=>{
@@ -221,17 +170,13 @@ module.exports = (app)=>{
         // encrypt password
         bcrypt.hash(newPassword, saltRounds, (err, hash)=>{
             if (err) throw err;
-
-            console.log('\nuser type: ' + userType);
-            console.log('\nreq body: ' + JSON.stringify(req.body));
             
             // save encrypted password to the right user
             if (userType == 'parent') {
                 db.Parent.update(
                     {
                         password: hash
-                    },
-                    {
+                    }, {
                         where: {
                             id: userId
                         }
@@ -245,8 +190,7 @@ module.exports = (app)=>{
                 db.Shelter.update(
                     {
                         password: hash
-                    },
-                    {
+                    },{
                         where: {
                             id: userId
                         }

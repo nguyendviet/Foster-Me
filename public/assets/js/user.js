@@ -1,4 +1,5 @@
 $(()=>{
+    var message = '';
 
     $('.btn-parent').on('click', ()=>{
         // show signup form to parent
@@ -6,11 +7,6 @@ $(()=>{
         $('.animal').show();
         $('.btn-signup-parent').show();
         $('.btn-signup-shelter').hide();
-
-        // show login form to parent
-        // $('.logIn').show();
-        // $('.btn-login-parent').show();
-        // $('.btn-login-shelter').hide();
     });
 
     $('.btn-shelter').on('click', ()=>{
@@ -19,14 +15,9 @@ $(()=>{
         $('.animal').hide();
         $('.btn-signup-parent').hide();
         $('.btn-signup-shelter').show();
-
-        // show login form to shelter
-        // $('.logIn').show();
-        // $('.btn-login-parent').hide();
-        // $('.btn-login-shelter').show();
     });
 
-    // when sign up as parent
+    // sign up as parent
     $('.btn-signup-parent').on('click', (e)=>{
         e.preventDefault();
 
@@ -50,13 +41,15 @@ $(()=>{
 
         // check if any field is left empty
         if (!name || !email || !password || !address || !phone) {
-            console.log('Fill the form!');
+            message = 'All fields are required.';
+            $('.signup-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');
             return;
         }
         // if all fields are filled
         else {
             // create new user object with details
             var newUser = {
+                userType: 'parent',
                 name: name,
                 email: email,
                 password: password,
@@ -70,41 +63,20 @@ $(()=>{
             $.ajax({
                 url: '/signup',
                 method: 'POST',
-                data: newUser
+                data: newUser,
+                error: (err)=>{
+                    message = err.responseJSON.message;
+                    $('.signup-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');
+                }
             })
             .done((content)=>{
-                // when successfully signed up, sign in automatically
-                console.log(content);
-
-                console.log('should be in user page now.');
+                // when successfully signed up, show user's pseronal page
                 $('body').html(content);
-
-                // send login request with new user's email and password
-                // $.ajax({
-                //     url: '/login',
-                //     method: 'POST',
-                //     data: signupData,
-                //     headers: {
-                //         "Authorization": "Basic " + btoa(signupData.email + ':' + signupData.password)
-                //     }
-                // }).done((result)=>{
-                //     console.log(result);
-                //     console.log('\nafter login request');
-                //     // send redirect request to right user's page with login token received
-                //     $.ajax({
-                //         url: '/user/' + result.id,
-                //         headers: {token: result.token}
-                //     })
-                //     .done((content)=>{
-                //         // replace content with page rendered from server
-                //         $('body').html(content);
-                //     });
-                // });
             });
         }
     });
 
-    // when sign up as shelter
+    // sign up as shelter
     $('.btn-signup-shelter').on('click', (e)=>{
         e.preventDefault();
 
@@ -116,13 +88,15 @@ $(()=>{
 
         // check if any field is left empty
         if (!name || !email || !password || !address || !phone) {
-            console.log('Fill the form!');
+            message = 'All fields are required.';
+            $('.signup-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');
             return;
         }
         // if all fields are filled
         else {
             // create new user object with details
             var newUser = {
+                userType: 'shelter',
                 name: name,
                 email: email,
                 password: password,
@@ -132,15 +106,17 @@ $(()=>{
 
             // send signup request with new user's details
             $.ajax({
-                url: '/signup/shelter',
+                url: '/signup',
                 method: 'POST',
-                data: newUser
+                data: newUser,
+                error: (err)=>{
+                    message = err.responseJSON.message;
+                    console.log(err);
+                    $('.signup-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');
+                }
             })
             .done((content)=>{
-                // when successfully signed up, sign in automatically
-                console.log(content);
-
-                console.log('should be in user page now.');
+                // when successfully signed up, show user's pseronal page
                 $('body').html(content);
             });
         }
@@ -149,52 +125,50 @@ $(()=>{
     // log in
     $('.btn-login').on('click', (e)=>{
         e.preventDefault();
-        console.log('login clicked');
 
         var user = {
             email: $('.email-login').val().trim(),
             password: $('.password-login').val().trim()
         };
 
-        console.log(user);
-
         $.ajax({
             url: '/login',
             method: 'POST',
             data: user,
             headers: {
-                "Authorization": "Basic " + btoa(user.email + ':' + user.password)
+                'Authorization': 'Basic ' + btoa(user.email + ':' + user.password)
+            },
+            error: (err)=>{
+                message = err.responseJSON.message;
+                $('.login-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');
             }
         })
         .done((result)=>{
-            console.log('token from login request: ' + result.token);
             var token = result.token;
-            userToken = token;
 
             // send redirect request to right user with login token received
             $.ajax({
                 url: '/user/' + token,
                 method: 'GET'
-                // headers: {token: result.token}
             })
             .done((content)=>{
                 // replace content with page rendered from server
                 $('body').html(content);
-                console.log('run map function here');
+
+                console.log('run map function here'); // TO DO <===================================================
             });
         });
     });
 
     // logout
     $('.btn-logout').on('click', ()=>{
-        console.log('logout clicked');
 
+        // send request to logout
         $.ajax({
             url: '/logout',
             method: 'POST'
         })
         .done((content)=>{
-            console.log('logged out');
             $('body').html(content);
         });
     });
@@ -206,13 +180,12 @@ $(()=>{
         var newPassword = $('.password-new1').val().trim();
         var confirmPassword = $('.password-new2').val().trim();
 
+        // if entered passwords don't match
         if (newPassword !== confirmPassword) {
-            console.log('passwords don\'t match');
-            $('.notice').html('<div class="alert alert-danger" role="alert">Your new passwords don\'t match.</div>');
+            $('.change-password-notice').html('<div class="alert alert-danger" role="alert">The passwords you entered don\'t match.</div>');
         }
+        // if entered passwords match
         else {
-            // $('.notice').html('<div class="alert alert-success" role="alert">Your new password has been successfully saved.</div>');
-            console.log('save new password');
             var userType = $('.thisUser').data('usertype');
             var userId = $('.thisUser').data('id');
             var newPassObj = {
@@ -221,15 +194,14 @@ $(()=>{
                 password: newPassword
             }
 
-            console.log(newPassObj);
-
+            // send request to update password
             $.ajax({
                 url: '/user',
                 method: 'PUT',
                 data: newPassObj
             })
             .done((newpass)=>{
-                console.log(newpass);
+                $('.change-password-notice').html('<div class="alert alert-success" role="alert">Your new password has been successfully saved.</div>');
             })
         }
     });
@@ -250,7 +222,7 @@ $(()=>{
             id: userId
         }
 
-        // send delete request to server
+        // send delete request
         $.ajax({
             url: '/user',
             method: 'DELETE',
