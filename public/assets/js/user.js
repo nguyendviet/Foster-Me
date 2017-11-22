@@ -1,6 +1,32 @@
 $(()=>{
+    $('.btn-parent').on('click', ()=>{
+        // show signup form to parent
+        $('.signUp').show();
+        $('.animal').show();
+        $('.btn-signup-parent').show();
+        $('.btn-signup-shelter').hide();
 
-    $('.btn-signup').on('click', (e)=>{
+        // show login form to parent
+        // $('.logIn').show();
+        // $('.btn-login-parent').show();
+        // $('.btn-login-shelter').hide();
+    });
+
+    $('.btn-shelter').on('click', ()=>{
+        // show signup form for shelter
+        $('.signUp').show();
+        $('.animal').hide();
+        $('.btn-signup-parent').hide();
+        $('.btn-signup-shelter').show();
+
+        // show login form to shelter
+        // $('.logIn').show();
+        // $('.btn-login-parent').hide();
+        // $('.btn-login-shelter').show();
+    });
+
+    // when sign up as parent
+    $('.btn-signup-parent').on('click', (e)=>{
         e.preventDefault();
 
         var name = $('.name-signup').val().trim();
@@ -77,6 +103,49 @@ $(()=>{
         }
     });
 
+    // when sign up as shelter
+    $('.btn-signup-shelter').on('click', (e)=>{
+        e.preventDefault();
+
+        var name = $('.name-signup').val().trim();
+        var email = $('.email-signup').val().trim();
+        var password = $('.password-signup').val().trim();
+        var address = $('.address-signup').val().trim();
+        var phone = $('.phone-signup').val().trim();
+
+        // check if any field is left empty
+        if (!name || !email || !password || !address || !phone) {
+            console.log('Fill the form!');
+            return;
+        }
+        // if all fields are filled
+        else {
+            // create new user object with details
+            var newUser = {
+                name: name,
+                email: email,
+                password: password,
+                address: address,
+                phone: phone
+            };
+
+            // send signup request with new user's details
+            $.ajax({
+                url: '/signup/shelter',
+                method: 'POST',
+                data: newUser
+            })
+            .done((content)=>{
+                // when successfully signed up, sign in automatically
+                console.log(content);
+
+                console.log('should be in user page now.');
+                $('body').html(content);
+            });
+        }
+    });
+
+    // log in as parent
     $('.btn-login').on('click', (e)=>{
         e.preventDefault();
         console.log('clicked');

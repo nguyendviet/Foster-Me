@@ -32,23 +32,42 @@ module.exports = (app)=>{
             // decode token
             jwt.verify(token, 'secret', (err, decoded)=>{
                 if (err) throw err;
+                console.log('\n====================\nuser-token decoded:\n');
                 console.log(decoded);
-                console.log('id got back: ' + decoded.id);
+                console.log('id decoded: ' + decoded.id);
+                console.log('email decoded: ' + decoded.email);
 
-                // search for user id in database
+                // search for user id in parent table
                 db.Parent.findAll({
                     where: {
-                        id: decoded.id
+                        email: decoded.email
                     }
                 })
-                .then((user)=>{
-                    console.log(JSON.stringify(user));
-                    console.log('\nuser name: ' + user[0].name);
-                    var userName = user[0].name;
-                    var userObj = {
-                        name: userName
+                .then((parent)=>{
+                    // if cannot find in parent table
+                    if (parent.length === 0) {
+                        // find in shelter table
+                        db.Shelter.findAll({
+                            where: {
+                                email: decoded.email
+                            }
+                        }).then((shelter)=>{
+                            var shelterName = shelter[0].name;
+                            var userObj = {
+                                name: shelterName
+                            }
+                            res.render('user', userObj);
+                        });
                     }
-                    res.render('user', userObj);
+                    else {
+                        console.log(JSON.stringify(parent));
+                        console.log('\nuser name: ' + parent[0].name);
+                        var parentName = parent[0].name;
+                        var userObj = {
+                            name: parentName
+                        }
+                        res.render('user', userObj);
+                    }
                 });
             });
         }

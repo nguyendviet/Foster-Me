@@ -1,7 +1,13 @@
 <div class="container text-center">
     <h1>Foster Me!</h1>
+
+    <h3>Sign up</h3>
+    <p>Are you a?</p>
+    <button type="button" class="btn btn-info btn-parent">Parent</button>
+    <button type="button" class="btn btn-info btn-shelter">Shelter</button>
+
     <form class="signUp">
-        <p>Sign up</p>
+
         <fieldset class="form-group">
             <input type="text" name="name" placeholder="Name" class="form-control name-signup">
         </fieldset>
@@ -18,16 +24,18 @@
             <input type="tel" name="phone" placeholder="Phone number" class="form-control phone-signup">
         </fieldset>
 
-        <p>Desired animals:</p>
-        <div class="form-check form-check-inline">
-            <label class="form-check-label">
-                <input class="form-check-input cat-signup" type="checkbox" name="cat"> Cats
-            </label>
-        </div>
-        <div class="form-check form-check-inline">
-            <label class="form-check-label">
-                <input class="form-check-input dog-signup" type="checkbox" name="dog"> Dogs
-            </label>
+        <div class="animal">
+            <p>Desired animals:</p>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-input cat-signup" type="checkbox" name="cat"> Cats
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-input dog-signup" type="checkbox" name="dog"> Dogs
+                </label>
+            </div>
         </div>
 
         <div class="form-check">
@@ -39,15 +47,19 @@
 
         <fieldset class="form-group">
             <input type="hidden" name="signUp" value="1">
-            <input type="submit" name="signUp" value="Sign Up" class="btn btn-success btn-signup">
+            <input type="submit" name="signUp" value="Sign Up" class="btn btn-success btn-signup-parent">
+            <input type="submit" name="signUp" value="Sign Up" class="btn btn-success btn-signup-shelter">
         </fieldset>
         <div class="toggleForm"><b>Log In</b></div>
     </form>
 
+    <hr/>
+    
 {{!-- login form --}}
     <div>{{this.message}}</div>
     <form class="logIn">
-        <p>Log in</p>
+        <h3>Log in</h3>
+
         <fieldset class="form-group">
             <input type="email" name="email" placeholder="Email" class="form-control email-login">
         </fieldset>
@@ -65,7 +77,7 @@
         <fieldset class="form-group">
             <input type="hidden" name="signUp">
             <input type="submit" name="logIn" value="Log In" class="btn btn-success btn-login">
+            {{!-- <input type="submit" name="logIn" value="Log In" class="btn btn-success btn-login-shelter"> --}}
         </fieldset>
-        <div class="toggleForm"><b>Sign Up</b></div>
     </form>
 </div>
