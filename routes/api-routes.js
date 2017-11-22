@@ -105,7 +105,7 @@ module.exports = (app)=>{
                         var token = jwt.sign({id: id, name: name, email: email}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
                         
                         // send token to client side to have secure connection before redirect to user's page
-                        res.status(200).send({auth: true, token: token, id: id});
+                        res.status(200).send({auth: true, token: token});
                       
                         // return res.status(200).json({message: 'you have successfully logged in'});
                     }
