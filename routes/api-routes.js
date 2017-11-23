@@ -41,7 +41,7 @@ module.exports = (app)=>{
                         })
                         .then((result)=>{
                             var token = jwt.sign({usertype: 'parent', id: result.id}, 'secret', {expiresIn: '1h'});
-                            // response with token
+                            // redirect to user's page
                             res.redirect('/user/' + token);
                         });
                     });
@@ -79,7 +79,7 @@ module.exports = (app)=>{
                         })
                         .then((result)=>{
                             var token = jwt.sign({usertype: 'shelter', id: result.id}, 'secret', {expiresIn: '1h'});
-                            // response with token
+                            // redirect to user's page
                             res.redirect('/user/' + token);
                         });
                     });
@@ -127,7 +127,10 @@ module.exports = (app)=>{
                                 var token = jwt.sign({usertype: 'shelter', id: id}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
                                 
                                 // send token to client side to have secure connection before redirect to user's page
-                                res.status(200).send({auth: true, token: token});
+                                // res.status(200).send({auth: true, token: token});
+
+                                // redirect to user's page
+                                res.redirect('/user/' + token);
                             }
                         });
                     }
@@ -149,7 +152,10 @@ module.exports = (app)=>{
                         var token = jwt.sign({usertype: 'parent', id: id}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
                         
                         // send token to client side to have secure connection before redirect to user's page
-                        res.status(200).send({auth: true, token: token});
+                        // res.status(200).send({auth: true, token: token});
+
+                        // redirect to user's page
+                        res.redirect('/user/' + token);
                     }
                 });
             }
@@ -163,69 +169,106 @@ module.exports = (app)=>{
 
     // change password
     app.put('/user', (req, res)=>{
-        var usertype = req.body.usertype;
-        var userId = req.body.id;
+        // var usertype = req.body.usertype;
+        // var userId = req.body.id;
+
+        var token = req.body.token;
         var newPassword = req.body.password;
 
-        // encrypt password
-        bcrypt.hash(newPassword, saltRounds, (err, hash)=>{
-            if (err) throw err;
-            
-            // save encrypted password to the right user
-            if (usertype == 'parent') {
-                db.Parent.update(
-                    {
-                        password: hash
-                    }, {
-                        where: {
-                            id: userId
-                        }
+        // check if token exists
+        if (!token) {
+            res.status(401).redirect('/error');
+        }
+        else {
+            // decode token
+            jwt.verify(token, 'secret', (err, decoded)=>{
+                if (err) {
+                    res.status(401).redirect('/error');
+                };
+
+                var usertype = decoded.usertype;
+                var userId = decoded.id;
+
+                // encrypt password
+                bcrypt.hash(newPassword, saltRounds, (errEncrypt, hash)=>{
+                    if (errEncrypt) throw errEncrypt;
+                    
+                    // save encrypted password to parent table if user is a parent
+                    if (usertype == 'parent') {
+                        db.Parent.update(
+                            {
+                                password: hash
+                            }, {
+                                where: {
+                                    id: userId
+                                }
+                            }
+                        )
+                        .then((parent)=>{
+                            res.json(parent);
+                        });
                     }
-                )
-                .then((parent)=>{
-                    res.json(parent);
-                });
-            }
-            else {
-                db.Shelter.update(
-                    {
-                        password: hash
-                    },{
-                        where: {
-                            id: userId
-                        }
+                    // save encrypted password to shelter table if user is a shelter
+                    else {
+                        db.Shelter.update(
+                            {
+                                password: hash
+                            },{
+                                where: {
+                                    id: userId
+                                }
+                            }
+                        )
+                        .then((shelter)=>{
+                            res.json(shelter);
+                        });
                     }
-                )
-                .then((shelter)=>{
-                    res.json(shelter);
-                })
-            }
-        });
+                }); 
+            });
+        }
     });
 
     // delete account
     app.delete('/user', (req, res)=>{
-        var usertype = req.body.usertype;
+        // var usertype = req.body.usertype;
 
-        if (usertype == 'parent') {
-            db.Parent.destroy({
-                where: {
-                    id: req.body.id
-                }
-            })
-            .then((confirm)=>{
-                res.json(confirm);
-            })
+        var token = req.body.token;
+
+        // check if token exists
+        if (!token) {
+            res.status(401).redirect('/error');
         }
         else {
-            db.Shelter.destroy({
-                where: {
-                    id: req.body.id
+            // decode token
+            jwt.verify(token, 'secret', (err, decoded)=>{
+                if (err) {
+                    res.status(401).redirect('/error');
+                };
+
+                var usertype = decoded.usertype;
+                var userId = decoded.id;
+
+                if (usertype == 'parent') {
+                    db.Parent.destroy({
+                        where: {
+                            id: userId
+                        }
+                    })
+                    .then((confirm)=>{
+                        res.json(confirm);
+                    })
                 }
-            })
-            .then((confirm)=>{
-                res.json(confirm);
+                else {
+                    db.Shelter.destroy({
+                        where: {
+                            id: userId
+                        }
+                    })
+                    .then((confirm)=>{
+                        res.json(confirm);
+                    });
+                }
             });
         }
-    })
+    });
 };

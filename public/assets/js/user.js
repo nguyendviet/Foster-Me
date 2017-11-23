@@ -2,19 +2,35 @@ $(()=>{
     var message = '';
 
     $('.btn-parent').on('click', ()=>{
+        // switch button colours
+        $('.btn-parent').attr('class', 'btn btn-primary btn-parent');
+        $('.btn-shelter').attr('class', 'btn btn-secondary btn-shelter');
         // show signup form to parent
         $('.signUp').show();
+        // show animal options
         $('.animal').show();
+        // show the right sign up button
         $('.btn-signup-parent').show();
         $('.btn-signup-shelter').hide();
+        // switch form title
+        $('.parent-title').show();
+        $('.shelter-title').hide();
     });
 
     $('.btn-shelter').on('click', ()=>{
+        // switch button colours
+        $('.btn-parent').attr('class', 'btn btn-secondary btn-parent');
+        $('.btn-shelter').attr('class', 'btn btn-primary btn-shelter');
         // show signup form for shelter
         $('.signUp').show();
+        // hide animal options
         $('.animal').hide();
+        // show the right sign up button
         $('.btn-signup-parent').hide();
         $('.btn-signup-shelter').show();
+        // switch form title
+        $('.parent-title').hide();
+        $('.shelter-title').show();
     });
 
     // sign up as parent
@@ -70,7 +86,7 @@ $(()=>{
                 }
             })
             .done((content)=>{
-                // when successfully signed up, show user's pseronal page
+                // when successfully signed up, show user's peronal page
                 $('body').html(content);
             });
         }
@@ -115,7 +131,7 @@ $(()=>{
                 }
             })
             .done((content)=>{
-                // when successfully signed up, show user's pseronal page
+                // when successfully signed up, show user's peronal page
                 $('body').html(content);
             });
         }
@@ -142,20 +158,11 @@ $(()=>{
                 $('.login-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');
             }
         })
-        .done((result)=>{
-            var token = result.token;
+        .done((content)=>{
+            // when successfully logged in, show user's peronal page
+            $('body').html(content);
 
-            // send redirect request to right user with login token received
-            $.ajax({
-                url: '/user/' + token,
-                method: 'GET'
-            })
-            .done((content)=>{
-                // replace content with page rendered from server
-                $('body').html(content);
-
-                console.log('run map function here'); // TO DO <===================================================
-            });
+            console.log('run map function here'); // TO DO <===================================================
         });
     });
 
@@ -185,11 +192,12 @@ $(()=>{
         }
         // if entered passwords match
         else {
-            var usertype = $('.thisUser').data('usertype');
-            var userId = $('.thisUser').data('id');
+            // var usertype = $('.thisUser').data('usertype');
+            // var userId = $('.thisUser').data('id');
+
+            var token = $('.thisUser').data('token');
             var newPassObj = {
-                usertype: usertype,
-                id: userId,
+                token: token,
                 password: newPassword
             }
 
@@ -197,7 +205,11 @@ $(()=>{
             $.ajax({
                 url: '/user',
                 method: 'PUT',
-                data: newPassObj
+                data: newPassObj,
+                error: (err)=>{
+                    message = err.responseJSON.message;
+                    $('.login-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');
+                }
             })
             .done((newpass)=>{
                 $('.change-password-notice').html('<div class="alert alert-success" role="alert">Your new password has been successfully saved.</div>');
@@ -213,18 +225,24 @@ $(()=>{
 
     // confirm delete account
     $('.btn-confirm-delete-account').on('click', ()=>{
-        var usertype = $('.thisUser').data('usertype');
-        var userId = $('.thisUser').data('id');
+        // var usertype = $('.thisUser').data('usertype');
+        // var userId = $('.thisUser').data('id');
+
+        var token = $('.thisUser').data('token');
+
         var deleteObj = {
-            usertype: usertype,
-            id: userId
-        }
+            token: token
+        };
 
         // send delete request
         $.ajax({
             url: '/user',
             method: 'DELETE',
-            data: deleteObj
+            data: deleteObj,
+            error: (err)=>{
+                message = err.responseJSON.message;
+                $('.login-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');
+            }
         })
         .done((confirm)=>{
             // if get confirm == 1

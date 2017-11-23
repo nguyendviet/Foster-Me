@@ -17,7 +17,9 @@ module.exports = (app)=>{
         else {
             // decode token
             jwt.verify(token, 'secret', (err, decoded)=>{
-                if (err) throw err;
+                if (err) {
+                    res.status(401).redirect('/error');
+                };
 
                 var usertype = decoded.usertype;
 
@@ -29,12 +31,10 @@ module.exports = (app)=>{
                         }
                     })
                     .then((parent)=>{
-                        var parentId = parent[0].id;
                         var parentName = parent[0].name;
                         var userObj = {
-                            usertype: 'parent',
-                            id: parentId,
-                            name: parentName
+                            name: parentName,
+                            token: token
                         }
                         res.render('user', userObj);
                     });
@@ -47,12 +47,10 @@ module.exports = (app)=>{
                         }
                     })
                     .then((shelter)=>{
-                        var shelterId = shelter[0].id;
                         var shelterName = shelter[0].name;
                         var userObj = {
-                            usertype: 'shelter',
-                            id: shelterId,
-                            name: shelterName
+                            name: shelterName,
+                            token: token
                         }
                         res.render('user', userObj);
                     });
