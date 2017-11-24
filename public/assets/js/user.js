@@ -103,6 +103,7 @@ $(()=>{
                 })
                 .done((content)=>{
                     $('body').html(content);
+                    console.log('run map function here'); // TO DO <===================================================
                 });
             });
         }
@@ -164,6 +165,7 @@ $(()=>{
                 })
                 .done((content)=>{
                     $('body').html(content);
+                    console.log('run map function here'); // TO DO <===================================================
                 });
             });
         }
