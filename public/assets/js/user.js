@@ -85,9 +85,25 @@ $(()=>{
                     $('.signup-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');
                 }
             })
-            .done((content)=>{
-                // when successfully signed up, show user's peronal page
-                $('body').html(content);
+            .done((auth)=>{
+                // save token to localstorage
+                localStorage.setItem('token', auth.token);
+
+                var userName = newUser.name.replace(/\s/g,''); // remove spaces from user's name
+                var token = localStorage.getItem('token'); // get token from localstorage
+                var tokenObj = {
+                    token: token
+                }
+
+                // send user's authentication request to server
+                $.ajax({
+                    url: '/auth/' + userName,
+                    method: 'POST',
+                    headers: tokenObj
+                })
+                .done((content)=>{
+                    $('body').html(content);
+                });
             });
         }
     });
@@ -130,9 +146,25 @@ $(()=>{
                     $('.signup-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');
                 }
             })
-            .done((content)=>{
-                // when successfully signed up, show user's peronal page
-                $('body').html(content);
+            .done((auth)=>{
+                // save token to localstorage
+                localStorage.setItem('token', auth.token);
+                
+                var userName = newUser.name.replace(/\s/g,''); // remove spaces from user's name
+                var token = localStorage.getItem('token'); // get token from localstorage
+                var tokenObj = {
+                    token: token
+                }
+
+                // send user's authentication request to server
+                $.ajax({
+                    url: '/auth/' + userName,
+                    method: 'POST',
+                    headers: tokenObj
+                })
+                .done((content)=>{
+                    $('body').html(content);
+                });
             });
         }
     });
@@ -158,11 +190,26 @@ $(()=>{
                 $('.login-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');
             }
         })
-        .done((content)=>{
-            // when successfully logged in, show user's peronal page
-            $('body').html(content);
+        .done((auth)=>{
+            // save token to localstorage
+            localStorage.setItem('token', auth.token);
+            
+            var userName = auth.name.replace(/\s/g,''); // remove spaces from user's name
+            var token = localStorage.getItem('token'); // get token from localstorage
+            var tokenObj = {
+                token: token
+            }
 
-            console.log('run map function here'); // TO DO <===================================================
+            // send user's authentication request to server
+            $.ajax({
+                url: '/auth/' + userName,
+                method: 'POST',
+                headers: tokenObj
+            })
+            .done((content)=>{
+                $('body').html(content);
+                console.log('run map function here'); // TO DO <===================================================
+            });
         });
     });
 
@@ -192,20 +239,20 @@ $(()=>{
         }
         // if entered passwords match
         else {
-            // var usertype = $('.thisUser').data('usertype');
-            // var userId = $('.thisUser').data('id');
-
-            var token = $('.thisUser').data('token');
+            var token = localStorage.getItem('token'); // get token from localstorage
+            var tokenObj = {
+                token: token
+            };
             var newPassObj = {
-                token: token,
                 password: newPassword
-            }
-
+            };
+            
             // send request to update password
             $.ajax({
                 url: '/user',
                 method: 'PUT',
                 data: newPassObj,
+                headers: tokenObj,
                 error: (err)=>{
                     message = err.responseJSON.message;
                     $('.login-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');
@@ -225,11 +272,10 @@ $(()=>{
 
     // confirm delete account
     $('.btn-confirm-delete-account').on('click', ()=>{
-        // var usertype = $('.thisUser').data('usertype');
-        // var userId = $('.thisUser').data('id');
-
-        var token = $('.thisUser').data('token');
-
+        var token = localStorage.getItem('token'); // get token from localstorage
+        var tokenObj = {
+            token: token
+        };
         var deleteObj = {
             token: token
         };
@@ -239,6 +285,7 @@ $(()=>{
             url: '/user',
             method: 'DELETE',
             data: deleteObj,
+            headers: tokenObj,
             error: (err)=>{
                 message = err.responseJSON.message;
                 $('.login-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');

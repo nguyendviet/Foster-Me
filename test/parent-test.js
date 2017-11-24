@@ -90,13 +90,13 @@ describe('Foster Me - parent user', function() {
         });
     });
 
-    it('should try to sign in as a wrong password', (done)=>{
+    it('should try to sign in with the old password or a wrong password', (done)=>{
         Nightmare({show: true})
         .goto('http://localhost:3000/')
         .wait('.email-login')
         .wait(1000 * 2)
         .type('.email-login', 'amy@gmail.com')
-        .type('.password-login', 'wrongpassword')
+        .type('.password-login', 'amypassword')
         .click('.btn-login')
         .then(()=>{
             done();

@@ -33,8 +33,7 @@ module.exports = (app)=>{
                     .then((parent)=>{
                         var parentName = parent[0].name;
                         var userObj = {
-                            name: parentName,
-                            token: token
+                            name: parentName
                         }
                         res.render('user', userObj);
                     });
@@ -49,8 +48,7 @@ module.exports = (app)=>{
                     .then((shelter)=>{
                         var shelterName = shelter[0].name;
                         var userObj = {
-                            name: shelterName,
-                            token: token
+                            name: shelterName
                         }
                         res.render('user', userObj);
                     });

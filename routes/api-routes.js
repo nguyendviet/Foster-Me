@@ -41,8 +41,8 @@ module.exports = (app)=>{
                         })
                         .then((result)=>{
                             var token = jwt.sign({usertype: 'parent', id: result.id}, 'secret', {expiresIn: '1h'});
-                            // redirect to user's page
-                            res.redirect('/user/' + token);
+                            // send token to client
+                            res.send({token: token});
                         });
                     });
                 }
@@ -79,8 +79,8 @@ module.exports = (app)=>{
                         })
                         .then((result)=>{
                             var token = jwt.sign({usertype: 'shelter', id: result.id}, 'secret', {expiresIn: '1h'});
-                            // redirect to user's page
-                            res.redirect('/user/' + token);
+                            // send token to client
+                            res.send({token: token});
                         });
                     });
                 }
@@ -124,13 +124,11 @@ module.exports = (app)=>{
                             }
                             else {
                                 var id = shelter[0].id;
+                                var name = shelter[0].name;
                                 var token = jwt.sign({usertype: 'shelter', id: id}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
-                                
-                                // send token to client side to have secure connection before redirect to user's page
-                                // res.status(200).send({auth: true, token: token});
 
-                                // redirect to user's page
-                                res.redirect('/user/' + token);
+                                // send token to client
+                                res.send({token: token, name: name});
                             }
                         });
                     }
@@ -149,13 +147,11 @@ module.exports = (app)=>{
                     }
                     else {
                         var id = parent[0].id;
+                        var name = parent[0].name;
                         var token = jwt.sign({usertype: 'parent', id: id}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
-                        
-                        // send token to client side to have secure connection before redirect to user's page
-                        // res.status(200).send({auth: true, token: token});
 
-                        // redirect to user's page
-                        res.redirect('/user/' + token);
+                        // send token to client
+                        res.send({token: token, name: name});
                     }
                 });
             }
@@ -169,10 +165,7 @@ module.exports = (app)=>{
 
     // change password
     app.put('/user', (req, res)=>{
-        // var usertype = req.body.usertype;
-        // var userId = req.body.id;
-
-        var token = req.body.token;
+        var token = req.headers.token;
         var newPassword = req.body.password;
 
         // check if token exists
@@ -230,9 +223,7 @@ module.exports = (app)=>{
 
     // delete account
     app.delete('/user', (req, res)=>{
-        // var usertype = req.body.usertype;
-
-        var token = req.body.token;
+        var token = req.headers.token;
 
         // check if token exists
         if (!token) {
@@ -269,6 +260,18 @@ module.exports = (app)=>{
                     });
                 }
             });
+        }
+    });
+
+    // authenticate user
+    app.post('/auth/:name', (req, res)=>{
+        var token = req.headers.token;
+
+        if (!token) {
+            res.status(401).redirect('/error');
+        }
+        else {
+            res.redirect('/user/' + token);
         }
     });
 };
