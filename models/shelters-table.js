@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes)=>{
-    var Parent = sequelize.define('Parent', {
+    var Shelter = sequelize.define('Shelter', {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -34,17 +34,9 @@ module.exports = (sequelize, DataTypes)=>{
             validate: {
               len: [3]
             }
-        },
-        cat: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false
-        },
-        dog: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false
         }
     });
   
-    return Parent;
+    return Shelter;
 };
   

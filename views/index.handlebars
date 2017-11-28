@@ -38,34 +38,45 @@
 
 <div class="container text-center">
     <h1>Foster Me!</h1>
-    <form action="/signup" method="post" class="signUp">
-        <p>Sign up</p>
+
+    <h3>Sign up</h3>
+    <p>Are you a?</p>
+    <button type="button" class="btn btn-secondary btn-parent">Parent</button>
+    <button type="button" class="btn btn-secondary btn-shelter">Shelter</button>
+
+    <form class="signUp">
+        <div class="signup-notice"></div>
+        <h4 class="parent-title">Parent Sign Up Form</h4>
+        <h4 class="shelter-title">Shelter Sign Up Form</h4>
+
         <fieldset class="form-group">
-            <input type="text" name="name" placeholder="Name" class="form-control">
+            <input type="text" name="name" placeholder="Name" class="form-control name-signup">
         </fieldset>
         <fieldset class="form-group">
-            <input type="email" name="email" placeholder="Email" class="form-control">
+            <input type="email" name="email" placeholder="Email" class="form-control email-signup">
         </fieldset>
         <fieldset class="form-group">
-            <input type="password" name="password" placeholder="Password" class="form-control">
+            <input type="password" name="password" placeholder="Password" class="form-control password-signup">
         </fieldset>
         <fieldset class="form-group">
-            <input type="text" name="address" placeholder="Address" class="form-control">
+            <input type="text" name="address" placeholder="Address" class="form-control address-signup">
         </fieldset>
         <fieldset class="form-group">
-            <input type="tel" name="phone" placeholder="Phone number" class="form-control">
+            <input type="tel" name="phone" placeholder="Phone number" class="form-control phone-signup">
         </fieldset>
 
-        <p>Desired animals:</p>
-        <div class="form-check form-check-inline">
-            <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" name="cat" value="1"> Cats
-            </label>
-        </div>
-        <div class="form-check form-check-inline">
-            <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" name="dog" value="1"> Dogs
-            </label>
+        <div class="animal">
+            <p>Desired animals:</p>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-input cat-signup" type="checkbox" name="cat"> Cats
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-input dog-signup" type="checkbox" name="dog"> Dogs
+                </label>
+            </div>
         </div>
 
         <div class="form-check">
@@ -77,18 +88,23 @@
 
         <fieldset class="form-group">
             <input type="hidden" name="signUp" value="1">
-            <input type="submit" name="submit" value="Sign Up" class="btn btn-success">
+            <input type="submit" name="signUp" value="Sign Up" class="btn btn-success btn-signup-parent">
+            <input type="submit" name="signUp" value="Sign Up" class="btn btn-success btn-signup-shelter">
         </fieldset>
-        <div class="toggleForm"><b>Log In</b></div>
     </form>
 
-    <form action="/login" method="post" class="logIn">
-        <p>Log in</p>
+    <hr/>
+    
+{{!-- login form --}}
+    <div>{{this.message}}</div>
+    <form class="logIn">
+        <h3>Log in</h3>
+        <div class="login-notice"></div>
         <fieldset class="form-group">
-            <input type="email" name="email" placeholder="Email" class="form-control">
+            <input type="email" name="email" placeholder="Email" class="form-control email-login">
         </fieldset>
         <fieldset class="form-group">
-            <input type="password" name="password" placeholder="Password" class="form-control">
+            <input type="password" name="password" placeholder="Password" class="form-control password-login">
         </fieldset>
 
         <div class="form-check">
@@ -99,10 +115,9 @@
         </div>
         
         <fieldset class="form-group">
-            <input type="hidden" name="signUp" value="0">
-            <input type="submit" name="submit" value="Log In" class="btn btn-success">
+            <input type="hidden" name="signUp">
+            <input type="submit" name="logIn" value="Log In" class="btn btn-success btn-login">
         </fieldset>
-        <div class="toggleForm"><b>Sign Up</b></div>
     </form>
 </div>
 
