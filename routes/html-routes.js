@@ -32,10 +32,14 @@ module.exports = (app)=>{
                     })
                     .then((parent)=>{
                         var parentName = parent[0].name;
-                        var userObj = {
-                            name: parentName
-                        }
-                        res.render('user', userObj);
+                        db.Shelter.findAll({})
+                        .then((shelters)=>{
+                            console.log('\nget shelters: ' + shelters);
+                            var userObj = {
+                                name: parentName
+                            }
+                            res.render('user', userObj);
+                        });
                     });
                 }
                 // user is a shelter
