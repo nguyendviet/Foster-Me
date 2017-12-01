@@ -102,6 +102,7 @@ $(()=>{
                     headers: tokenObj
                 })
                 .done((content)=>{
+                    console.log(content);
                     $('body').html(content);
                     console.log('run map function here'); // TO DO <===================================================
                 });
@@ -164,6 +165,7 @@ $(()=>{
                     headers: tokenObj
                 })
                 .done((content)=>{
+                    console.log(content);
                     $('body').html(content);
                     console.log('run map function here'); // TO DO <===================================================
                 });
@@ -209,6 +211,7 @@ $(()=>{
                 headers: tokenObj
             })
             .done((content)=>{
+                console.log(content);
                 $('body').html(content);
                 console.log('run map function here'); // TO DO <===================================================
             });

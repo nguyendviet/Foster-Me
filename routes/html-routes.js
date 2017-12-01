@@ -34,9 +34,11 @@ module.exports = (app)=>{
                         var parentName = parent[0].name;
                         db.Shelter.findAll({})
                         .then((shelters)=>{
-                            console.log('\nget shelters: ' + shelters);
+                            console.log('\n\nget shelters: ' + JSON.stringify(shelters));
+                            console.log('\n\nshelter list: ' + JSON.stringify(shelters[0]));
                             var userObj = {
-                                name: parentName
+                                name: parentName,
+                                list: shelters
                             }
                             res.render('user', userObj);
                         });
@@ -51,10 +53,17 @@ module.exports = (app)=>{
                     })
                     .then((shelter)=>{
                         var shelterName = shelter[0].name;
-                        var userObj = {
-                            name: shelterName
-                        }
-                        res.render('user', userObj);
+
+                        db.Parent.findAll({})
+                        .then((parents)=>{
+                            console.log('\n\nget parents: ' + JSON.stringify(parents));
+                            console.log('\n\nparent list: ' + JSON.stringify(parents[0]));
+                            var userObj = {
+                                name: shelterName,
+                                list: parents
+                            }
+                            res.render('user', userObj);
+                        });
                     });
                 }
             });
