@@ -60,6 +60,26 @@
     <button type="button" class="btn btn-warning btn-cancel-delete-account">Cancel</button>
 </div>
 
-<div id="map" style='width: 100%; height: 80vh;'></div>
 
+
+
+
+<div class="container text-center">
+    <h1>GOOGLE MAP HERE!</h1>
+    <div>
+        <ul>
+                {{#each this.list}}
+                    
+                        <li>
+                            {{name}}
+                            {{address}}
+                            {{phone}}
+                            {{longitude}}
+                            {{latitude}}
+                        </li>
+                {{/each}}
+            </ul>
+    </div>
+</div>
+<div id="map" style='width: 100%; height: 80vh;'></div>
 

@@ -120,7 +120,9 @@ $(()=>{
                     headers: tokenObj
                 })
                 .done((content)=>{
+                    console.log(content);
                     $('body').html(content);
+                    console.log('run map function here'); // TO DO <===================================================
                 });
             });
         });
@@ -148,12 +150,13 @@ $(()=>{
         
         // if all fields are filled
         else {
-        
+        var addressForGoogle = address.replace(/\s/g, '+');
         //this does the geocoding for the address, turning it into a long and lat. 
             $.ajax({
-            url:  "https://maps.googleapis.com/maps/api/geocode/json?address="+ address +"&key="+ geocodeApi,
+            url:  "https://maps.googleapis.com/maps/api/geocode/json?address="+ addressForGoogle +"&key="+ geocodeApi,
             method: "GET"
                 }).done(function(response) {
+                    console.log("\n\n=================\n\nit runs");
                 //latLong variable reaches in for the exact lat and long that comes back for the specific zipcode
                 var latLong =  response.results[0].geometry.location;
                 console.log(latLong);
@@ -199,7 +202,9 @@ $(()=>{
                     headers: tokenObj
                 })
                 .done((content)=>{
+                    console.log(content);
                     $('body').html(content);
+                    console.log('run map function here'); // TO DO <===================================================
                 });
             });
         });
@@ -244,6 +249,7 @@ $(()=>{
                 headers: tokenObj
             })
             .done((content)=>{
+                console.log(content);
                 $('body').html(content);
                 console.log('run map function here'); // TO DO <===================================================
             });
