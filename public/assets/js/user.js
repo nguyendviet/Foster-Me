@@ -105,6 +105,14 @@ $(()=>{
                     console.log(content);
                     $('body').html(content);
                     console.log('run map function here'); // TO DO <===================================================
+                    $.ajax({
+                        url: '/map',
+                        method: 'GET',
+                        headers: tokenObj
+                    })
+                    .done((map)=>{
+                        console.log(map);
+                    });
                 });
             });
         }
@@ -168,6 +176,14 @@ $(()=>{
                     console.log(content);
                     $('body').html(content);
                     console.log('run map function here'); // TO DO <===================================================
+                    $.ajax({
+                        url: '/map',
+                        method: 'GET',
+                        headers: tokenObj
+                    })
+                    .done((map)=>{
+                        console.log(map);
+                    });
                 });
             });
         }
@@ -214,6 +230,14 @@ $(()=>{
                 console.log(content);
                 $('body').html(content);
                 console.log('run map function here'); // TO DO <===================================================
+                $.ajax({
+                    url: '/map',
+                    method: 'GET',
+                    headers: tokenObj
+                })
+                .done((map)=>{
+                    console.log(map);
+                });
             });
         });
     });

@@ -70,6 +70,39 @@ module.exports = (app)=>{
         }
     });
 
+    app.get('/map', (req, res)=>{
+        var token = req.params.token;
+        
+        // check if token exists
+        if (!token) {
+            res.status(401).redirect('/error');
+        }
+        else {
+            // decode token
+            jwt.verify(token, 'secret', (err, decoded)=>{
+                if (err) {
+                    res.status(401).redirect('/error');
+                };
+
+                var usertype = decoded.usertype;
+
+                // user is a parent
+                if (usertype == 'parent') {
+                    db.Shelter.findAll({})
+                    .then((shelters)=>{
+                        res.json(shelters)
+                    });
+                }
+                else {
+                    db.Parent.findAll({})
+                    .then((parents)=>{
+                        res.json(parents)
+                    });
+                }
+            });
+        }
+    });
+
     app.get('/error', (req, res)=>{
         res.render('error');
     });
