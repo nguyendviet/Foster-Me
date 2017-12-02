@@ -1,6 +1,4 @@
 //add in Google API information
-
-var geocodeApi = "AIzaSyBUOuAwLVAbvO0rtxxLDyeJlLN4uyESD-I"
 var gMapsApi = "AIzaSyCaa0_Fa2NqGkWBf5-1Q3Cp-oeYnw8HZCc"
 
 

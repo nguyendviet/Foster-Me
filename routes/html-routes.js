@@ -62,7 +62,7 @@ module.exports = (app)=>{
                                 name: shelterName,
                                 list: parents
                             }
-                            res.render('user', userObj);
+                            res.render('user', {data: encodeURIComponent(JSON.stringify(userObj))});
                         });
                     });
                 }

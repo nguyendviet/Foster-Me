@@ -61,7 +61,12 @@
 </div>
 
 
+<script>
+var decodedJson = decodeURIComponent("{{data}}");
+var jsonObj = JSON.parse(decodedJson);
 
+console.log('this is data: ' + {{name}});
+</script>
 
 
 <div class="container text-center">
