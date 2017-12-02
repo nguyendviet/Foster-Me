@@ -32,28 +32,36 @@ db.sequelize.sync({force: true}).then(()=>{
             email: 'info@americanhumane.org',
             password: 'amehum',
             address: '1400 16th St NW #360, Washington, DC 20036',
-            phone: '8002274645'
+            phone: '8002274645',
+            longitude: 38.909035,
+            latitude: -77.039242
         },
         {
             name: 'City Dogs Rescue & City Kitties',
             email: 'info@citydogsrescuedc.org',
             password: 'citydog',
             address: '2121 Decatur Pl NW #3, Washington, DC 20008',
-            phone: '2025677364'
+            phone: '2025677364',
+            longitude: 38.9135097,
+            latitude: -77.0501535
         },
         {
             name: 'Wagtime',
             email: 'info@wagtimedc.com',
             password: 'wagwag',
             address: '1232 9th St NW, Washington, DC 20001',
-            phone: '2027890870'
+            phone: '2027890870',
+            longitude: 38.9065657,
+            latitude: -77.0265479
         },
         {
             name: 'Humane Rescue Alliance',
             email: 'info@humanerescuealliance.org',
             password: 'humresall',
             address: '1201 New York Ave NE, Washington, DC 20002',
-            phone: '2025766664'
+            phone: '2025766664',
+            longitude: 38.9135668,
+            latitude: -76.9925556
         }
     ]);
 
@@ -66,7 +74,9 @@ db.sequelize.sync({force: true}).then(()=>{
                 address: '1416 12th St NW, Washington, DC 20005',
                 phone: '2022347387',
                 cat: false,
-                dog: false
+                dog: false,
+                longitude: 38.9090194,
+                latitude: -77.0305502
             },
             {
                 name: 'Pandora Angryladies',
@@ -75,7 +85,9 @@ db.sequelize.sync({force: true}).then(()=>{
                 address: '1536 16th St NW, Washington, DC 20036',
                 phone: '2024837382',
                 cat: true,
-                dog: true
+                dog: true,
+                longitude: 38.9109778,
+                latitude: -77.0390737
             },
             {
                 name: 'Adam Morgan',
@@ -84,7 +96,9 @@ db.sequelize.sync({force: true}).then(()=>{
                 address: '2112 18 St NW #1, Washington, DC 20009',
                 phone: '2026387470',
                 cat: true,
-                dog: false
+                dog: false,
+                longitude: 38.9183334,
+                latitude: -77.0440605
             },
             {
                 name: 'David Veternari',
@@ -93,7 +107,9 @@ db.sequelize.sync({force: true}).then(()=>{
                 address: '2022 P St NW, Washington, DC 20036',
                 phone: '2024662211',
                 cat: false,
-                dog: true
+                dog: true,
+                longitude: 38.9094284,
+                latitude: -77.0480979
             },
             {
                 name: 'Harry Horseman',
@@ -102,7 +118,9 @@ db.sequelize.sync({force: true}).then(()=>{
                 address: '1000 29th St NW # T100, Washington, DC 20007',
                 phone: '2029650500',
                 cat: true,
-                dog: false
+                dog: false,
+                longitude: 38.9029249,
+                latitude: -77.0604903
             },
             {
                 name: 'Cadie Arena',
@@ -111,9 +129,11 @@ db.sequelize.sync({force: true}).then(()=>{
                 address: '601 F St NW, Washington, DC 20004',
                 phone: '2026283200',
                 cat: false,
-                dog: true
+                dog: true,
+                longitude: 38.898129,
+                latitude: -77.0231517
             }
-          ]);
+        ]);
     app.listen(PORT, ()=>{
         console.log('Foster-Me listening on port ' + PORT);
     });
