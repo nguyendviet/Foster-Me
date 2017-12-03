@@ -34,13 +34,11 @@ module.exports = (app)=>{
                         var parentName = parent[0].name;
                         db.Shelter.findAll({})
                         .then((shelters)=>{
-                            console.log('\n\nget shelters: ' + JSON.stringify(shelters));
-                            console.log('\n\nshelter list: ' + JSON.stringify(shelters[0]));
                             var userObj = {
                                 name: parentName,
                                 list: shelters
                             }
-                            res.json('user', userObj);
+                            res.render('user', userObj);
                         });
                     });
                 }
@@ -56,13 +54,11 @@ module.exports = (app)=>{
 
                         db.Parent.findAll({})
                         .then((parents)=>{
-                            console.log('\n\nget parents: ' + JSON.stringify(parents));
-                            console.log('\n\nparent list: ' + JSON.stringify(parents[0]));
                             var userObj = {
                                 name: shelterName,
                                 list: parents
                             }
-                            res.render('user', {data: encodeURIComponent(JSON.stringify(userObj))});
+                            res.render('user', userObj);
                         });
                     });
                 }
@@ -71,7 +67,7 @@ module.exports = (app)=>{
     });
 
     app.get('/map', (req, res)=>{
-        var token = req.params.token;
+        var token = req.headers.token;
         
         // check if token exists
         if (!token) {
@@ -96,7 +92,6 @@ module.exports = (app)=>{
                 else {
                     db.Parent.findAll({})
                     .then((parents)=>{
-                        console.log('\n=============\nthis is parents find all: ' + parents)
                         res.json(parents)
                     });
                 }

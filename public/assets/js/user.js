@@ -70,70 +70,69 @@ $(()=>{
 
             //this does the geocoding for the address, turning it into a long and lat. 
             $.ajax({
-            url:  "https://maps.googleapis.com/maps/api/geocode/json?address="+ address +"&key="+ geocodeApi,
-            method: "GET"
-              }).done(function(response) {
+                url:  "https://maps.googleapis.com/maps/api/geocode/json?address="+ address +"&key="+ geocodeApi,
+                method: "GET"
+            })
+            .done(function(response) {
                 //latLong variable reaches in for the exact lat and long that comes back for the specific zipcode
                 var latLong =  response.results[0].geometry.location;
                 console.log(latLong);
                 var lat = latLong.lat;
                 var long = latLong.lng;
 
-            // create new user object with details
-            var newUser = {
-                usertype: 'parent',
-                name: name,
-                email: email,
-                password: password,
-                address: address,
-                phone: phone,
-                cat: cat,
-                dog: dog,
-                latitude: lat,
-                longitude: long 
-            };
+                // create new user object with details
+                var newUser = {
+                    usertype: 'parent',
+                    name: name,
+                    email: email,
+                    password: password,
+                    address: address,
+                    phone: phone,
+                    cat: cat,
+                    dog: dog,
+                    latitude: lat,
+                    longitude: long 
+                };
 
-            // send signup request with new user's details
-            $.ajax({
-                url: '/signup',
-                method: 'POST',
-                data: newUser,
-                error: (err)=>{
-                    message = err.responseJSON.message;
-                    $('.signup-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');
-                }
-            })
-            .done((auth)=>{
-                // save token to localstorage
-                localStorage.setItem('token', auth.token);
-
-                var userName = newUser.name.replace(/\s/g,''); // remove spaces from user's name
-                var token = localStorage.getItem('token'); // get token from localstorage
-                var tokenObj = {
-                    token: token
-                }
-
-                // send user's authentication request to server
+                // send signup request with new user's details
                 $.ajax({
-                    url: '/auth/' + userName,
+                    url: '/signup',
                     method: 'POST',
-                    headers: tokenObj
+                    data: newUser,
+                    error: (err)=>{
+                        message = err.responseJSON.message;
+                        $('.signup-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');
+                    }
                 })
-                .done((content)=>{
-                    console.log(content);
-                    // $('body').html(content);
-                    console.log('run map function here'); // TO DO <===================================================
+                .done((auth)=>{
+                    // save token to localstorage
+                    localStorage.setItem('token', auth.token);
+
+                    var userName = newUser.name.replace(/\s/g,''); // remove spaces from user's name
+                    var token = localStorage.getItem('token'); // get token from localstorage
+                    var tokenObj = {
+                        token: token
+                    }
+
+                    // send user's authentication request to server
                     $.ajax({
-                        url: '/map',
-                        method: 'GET',
+                        url: '/auth/' + userName,
+                        method: 'POST',
                         headers: tokenObj
                     })
-                    .done((map)=>{
-                        console.log('this is map request response: ' + map);
-                        console.log('this is map request response: ' + map[0]);
+                    .done((content)=>{
+                        $('body').html(content);
+                        console.log('run map function here'); // TO DO <===================================================
+                        $.ajax({
+                            url: '/map',
+                            method: 'GET',
+                            headers: tokenObj
+                        })
+                        .done((userOnMap)=>{
+                            console.log('this is map request response: ' + JSON.stringify(userOnMap));
+                        });
                     });
                 });
-            });
         });
         }
     });
@@ -165,7 +164,6 @@ $(()=>{
             url:  "https://maps.googleapis.com/maps/api/geocode/json?address="+ addressForGoogle +"&key="+ geocodeApi,
             method: "GET"
                 }).done(function(response) {
-                    console.log("\n\n=================\n\nit runs");
                 //latLong variable reaches in for the exact lat and long that comes back for the specific zipcode
                 var latLong =  response.results[0].geometry.location;
                 console.log(latLong);
@@ -211,17 +209,15 @@ $(()=>{
                     headers: tokenObj
                 })
                 .done((content)=>{
-                    console.log(content);
-                    // $('body').html(content);
+                    $('body').html(content);
                     console.log('run map function here'); // TO DO <===================================================
                     $.ajax({
                         url: '/map',
                         method: 'GET',
                         headers: tokenObj
                     })
-                    .done((map)=>{
-                        console.log('this is map request response: ' + map);
-                        console.log('this is map request response: ' + map[0]);
+                    .done((userOnMap)=>{
+                        console.log('this is map request response: ' + JSON.stringify(userOnMap));
                     });
                 });
             });
@@ -267,17 +263,15 @@ $(()=>{
                 headers: tokenObj
             })
             .done((content)=>{
-                console.log(content);
-                // $('body').html(content);
+                $('body').html(content);
                 console.log('run map function here'); // TO DO <===================================================
                 $.ajax({
                     url: '/map',
                     method: 'GET',
                     headers: tokenObj
                 })
-                .done((map)=>{
-                    console.log('this is map request response: ' + map);
-                    console.log('this is map request response: ' + map[0]);
+                .done((userOnMap)=>{
+                    console.log('this is map request response: ' + JSON.stringify(userOnMap));
                 });
             });
         });
