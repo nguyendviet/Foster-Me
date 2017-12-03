@@ -1,3 +1,37 @@
+
+<!DOCTYPE HTML>
+<HTML>
+
+<!-- - Navbar  -->
+<nav id="navbar" class="navbar navbar-toggleable-md navbar-light bg-faded">
+
+ 
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+    
+     <a class="navbar-brand" href="#">
+      <img src="./assets/images/foster-me-logo.png" height="50px" alt="Foster Me">
+      </a>
+
+
+      <div class="justify-content-end collapse navbar-collapse" id="navbarNav">
+
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link navigation" data-toggle="modal" data-target=".about-page" href="#">ABOUT</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link navigation" data-toggle="modal" data-target=".my-account" href="#"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+          </li>
+          
+        </ul>
+        </div>
+
+  </nav> <!-- Navbar -->
+
 <p>Hello {{this.name}}. You have successfully logged in.</p>
 
 <button type="button" class="btn btn-warning btn-logout">Logout</button>
@@ -26,6 +60,30 @@
     <button type="button" class="btn btn-warning btn-cancel-delete-account">Cancel</button>
 </div>
 
+
+<script>
+var decodedJson = decodeURIComponent("{{data}}");
+var jsonObj = JSON.parse(decodedJson);
+
+console.log('this is data: ' + {{name}});
+</script>
+
+
 <div class="container text-center">
     <h1>GOOGLE MAP HERE!</h1>
+    <div>
+        <ul>
+                {{#each this.list}}
+                    
+                        <li>
+                            {{name}}
+                            {{address}}
+                            {{phone}}
+                            {{longitude}}
+                            {{latitude}}
+                        </li>
+                {{/each}}
+            </ul>
+    </div>
 </div>
+<div id="map" style='width: 100%; height: 80vh;'></div>

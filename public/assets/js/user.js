@@ -1,3 +1,5 @@
+var geocodeApi = "AIzaSyBUOuAwLVAbvO0rtxxLDyeJlLN4uyESD-I"
+
 $(()=>{
     var message = '';
 
@@ -44,6 +46,7 @@ $(()=>{
         var phone = $('.phone-signup').val().trim();
         var cat = false;
         var dog = false;
+        
 
         // if cat checkbox is checked
         if ($('.cat-signup').is(':checked')) {
@@ -61,8 +64,21 @@ $(()=>{
             $('.signup-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');
             return;
         }
+
         // if all fields are filled
         else {
+
+            //this does the geocoding for the address, turning it into a long and lat. 
+            $.ajax({
+            url:  "https://maps.googleapis.com/maps/api/geocode/json?address="+ address +"&key="+ geocodeApi,
+            method: "GET"
+              }).done(function(response) {
+                //latLong variable reaches in for the exact lat and long that comes back for the specific zipcode
+                var latLong =  response.results[0].geometry.location;
+                console.log(latLong);
+                var lat = latLong.lat;
+                var long = latLong.lng;
+
             // create new user object with details
             var newUser = {
                 usertype: 'parent',
@@ -72,7 +88,9 @@ $(()=>{
                 address: address,
                 phone: phone,
                 cat: cat,
-                dog: dog
+                dog: dog,
+                latitude: lat,
+                longitude: long 
             };
 
             // send signup request with new user's details
@@ -102,11 +120,24 @@ $(()=>{
                     headers: tokenObj
                 })
                 .done((content)=>{
-                    $('body').html(content);
+                    console.log(content);
+                    // $('body').html(content);
+                    console.log('run map function here'); // TO DO <===================================================
+                    $.ajax({
+                        url: '/map',
+                        method: 'GET',
+                        headers: tokenObj
+                    })
+                    .done((map)=>{
+                        console.log('this is map request response: ' + map);
+                        console.log('this is map request response: ' + map[0]);
+                    });
                 });
             });
+        });
         }
     });
+       
 
     // sign up as shelter
     $('.btn-signup-shelter').on('click', (e)=>{
@@ -124,8 +155,23 @@ $(()=>{
             $('.signup-notice').html('<div class="alert alert-danger" role="alert">' + message + '</div>');
             return;
         }
+        
+        
         // if all fields are filled
         else {
+        var addressForGoogle = address.replace(/\s/g, '+');
+        //this does the geocoding for the address, turning it into a long and lat. 
+            $.ajax({
+            url:  "https://maps.googleapis.com/maps/api/geocode/json?address="+ addressForGoogle +"&key="+ geocodeApi,
+            method: "GET"
+                }).done(function(response) {
+                    console.log("\n\n=================\n\nit runs");
+                //latLong variable reaches in for the exact lat and long that comes back for the specific zipcode
+                var latLong =  response.results[0].geometry.location;
+                console.log(latLong);
+                var lat = latLong.lat;
+                var long = latLong.lng;
+
             // create new user object with details
             var newUser = {
                 usertype: 'shelter',
@@ -133,7 +179,9 @@ $(()=>{
                 email: email,
                 password: password,
                 address: address,
-                phone: phone
+                phone: phone,
+                latitude: lat,
+                longitude: long 
             };
 
             // send signup request with new user's details
@@ -163,9 +211,21 @@ $(()=>{
                     headers: tokenObj
                 })
                 .done((content)=>{
-                    $('body').html(content);
+                    console.log(content);
+                    // $('body').html(content);
+                    console.log('run map function here'); // TO DO <===================================================
+                    $.ajax({
+                        url: '/map',
+                        method: 'GET',
+                        headers: tokenObj
+                    })
+                    .done((map)=>{
+                        console.log('this is map request response: ' + map);
+                        console.log('this is map request response: ' + map[0]);
+                    });
                 });
             });
+        });
         }
     });
 
@@ -207,8 +267,18 @@ $(()=>{
                 headers: tokenObj
             })
             .done((content)=>{
-                $('body').html(content);
+                console.log(content);
+                // $('body').html(content);
                 console.log('run map function here'); // TO DO <===================================================
+                $.ajax({
+                    url: '/map',
+                    method: 'GET',
+                    headers: tokenObj
+                })
+                .done((map)=>{
+                    console.log('this is map request response: ' + map);
+                    console.log('this is map request response: ' + map[0]);
+                });
             });
         });
     });

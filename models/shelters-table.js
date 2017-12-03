@@ -34,6 +34,14 @@ module.exports = (sequelize, DataTypes)=>{
             validate: {
               len: [3]
             }
+        },
+        longitude: {
+            type: DataTypes.DECIMAL(10, 8),
+            // allowNull: false (show later when geomap ready)
+        },
+        latitude: {
+            type: DataTypes.DECIMAL(11, 8),
+            // allowNull: false (show later when geomap ready)
         }
     });
   

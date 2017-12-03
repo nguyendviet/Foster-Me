@@ -37,7 +37,9 @@ module.exports = (app)=>{
                             address: req.body.address,
                             phone: req.body.phone,
                             cat: req.body.cat,
-                            dog: req.body.dog
+                            dog: req.body.dog,
+                            longitude: req.body.longitude,
+                            latitude: req.body.latitude
                         })
                         .then((result)=>{
                             var token = jwt.sign({usertype: 'parent', id: result.id}, 'secret', {expiresIn: '1h'});
@@ -75,7 +77,9 @@ module.exports = (app)=>{
                             email: req.body.email,
                             password: hash,
                             address: req.body.address,
-                            phone: req.body.phone
+                            phone: req.body.phone,
+                            longitude: req.body.longitude,
+                            latitude: req.body.latitude
                         })
                         .then((result)=>{
                             var token = jwt.sign({usertype: 'shelter', id: result.id}, 'secret', {expiresIn: '1h'});

@@ -42,9 +42,16 @@ module.exports = (sequelize, DataTypes)=>{
         dog: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
+        },
+        longitude: {
+            type: DataTypes.DECIMAL(10, 8),
+            // allowNull: false (show later when geomap ready)
+        },
+        latitude: {
+            type: DataTypes.DECIMAL(11, 8),
+            // allowNull: false (show later when geomap ready)
         }
     });
   
     return Parent;
 };
-  
