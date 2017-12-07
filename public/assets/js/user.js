@@ -122,7 +122,6 @@ $(()=>{
                     })
                     .done((content)=>{
                         $('body').html(content);
-                        console.log('run map function here'); // TO DO <===================================================
                         $.ajax({
                             url: '/map',
                             method: 'GET',
@@ -130,6 +129,7 @@ $(()=>{
                         })
                         .done((userOnMap)=>{
                             console.log('this is map request response: ' + JSON.stringify(userOnMap));
+                            console.log('run map function here'); // TO DO <===================================================
                         });
                     });
                 });
@@ -211,7 +211,6 @@ $(()=>{
                 .done((content)=>{
                     console.log(content);
                     $('body').html(content);
-                    console.log('run map function here'); // TO DO <===================================================
                     $.ajax({
                         url: '/map',
                         method: 'GET',
@@ -219,6 +218,7 @@ $(()=>{
                     })
                     .done((userOnMap)=>{
                         console.log('this is map request response: ' + JSON.stringify(userOnMap));
+                        console.log('run map function here'); // TO DO <===================================================
                     });
                 });
             });
@@ -266,7 +266,6 @@ $(()=>{
             .done((content)=>{
                 console.log(content);
                 $('body').html(content);
-                console.log('run map function here'); // TO DO <===================================================
                 $.ajax({
                     url: '/map',
                     method: 'GET',
@@ -274,6 +273,7 @@ $(()=>{
                 })
                 .done((userOnMap)=>{
                     console.log('this is map request response: ' + JSON.stringify(userOnMap));
+                    console.log('run map function here'); // TO DO <===================================================
                 });
             });
         });
