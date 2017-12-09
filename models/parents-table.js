@@ -43,11 +43,11 @@ module.exports = (sequelize, DataTypes)=>{
             type: DataTypes.BOOLEAN,
             defaultValue: false
         },
-        longitude: {
+        latitude: {
             type: DataTypes.DECIMAL(10, 8),
             // allowNull: false (show later when geomap ready)
         },
-        latitude: {
+        longitude: {
             type: DataTypes.DECIMAL(11, 8),
             // allowNull: false (show later when geomap ready)
         }

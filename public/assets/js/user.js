@@ -1,7 +1,73 @@
-var geocodeApi = "AIzaSyBUOuAwLVAbvO0rtxxLDyeJlLN4uyESD-I"
+var geocodeApi = "AIzaSyAQRPht-fE8RI3ZmfR6ckJ9rwW8WRPok8I";
+
+function initMap(data) {
+    $.ajax({
+        url: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAQRPht-fE8RI3ZmfR6ckJ9rwW8WRPok8I',
+        method: 'GET',
+        dataType: 'jsonp',
+        cache: false, 
+    })
+    .done(()=>{
+        // get lat long of current user
+        var myLat = parseFloat($('.myPlace').data('lat'));
+        var myLong = parseFloat($('.myPlace').data('long'));
+        var myPlace = {lat: myLat, lng: myLong};
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 13,
+            center: myPlace
+        });
+        
+
+        // display user's location on map with marker
+        var marker = new google.maps.Marker({
+            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+            animation: google.maps.Animation.DROP,
+            position: myPlace,
+            map: map
+        });
+
+        // loop through data received from the server, display on map with markers
+        for (var i = 0; i < data.length; i++) {
+            var coorLat = data[i].latitude;
+            var coorLng = data[i].longitude; 
+            var latLng = new google.maps.LatLng(coorLat,coorLng);
+            var marker = new google.maps.Marker({
+                icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                animation: google.maps.Animation.DROP,
+                position: latLng,
+                map: map
+            });
+            var contentString = '<p>Name: ' + data[i].name + '</p>';
+            contentString += '<p>Address: ' + data[i].address + '</p>';
+            contentString += '<p>Phone: ' + data[i].phone + '</p>';
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+            
+            google.maps.event.addListener(marker,'click', (function(marker, infowindow){ 
+                return function() {
+                   infowindow.open(map, marker);
+                };
+            })(marker, infowindow));
+        }
+    });
+}
 
 $(()=>{
     var message = '';
+
+    $('.link-login').on('click', ()=>{
+        $('.user-account').show();
+        $('.logIn').show();
+        $('.signUp').hide();
+    });
+
+    $('.link-signup').on('click', ()=>{
+        $('.user-account').show();
+        $('.logIn').hide();
+        $('.signUp').show();
+        $('.btn-signup-shelter').hide();
+    });
 
     $('.btn-parent').on('click', ()=>{
         // switch button colours
@@ -68,9 +134,10 @@ $(()=>{
         // if all fields are filled
         else {
 
+            var addressForGoogle = address.replace(/\s/g, '+');
             //this does the geocoding for the address, turning it into a long and lat. 
             $.ajax({
-                url:  "https://maps.googleapis.com/maps/api/geocode/json?address="+ address +"&key="+ geocodeApi,
+                url:  "https://maps.googleapis.com/maps/api/geocode/json?address="+ addressForGoogle +"&key="+ geocodeApi,
                 method: "GET"
             })
             .done(function(response) {
@@ -79,7 +146,6 @@ $(()=>{
                 console.log(latLong);
                 var lat = latLong.lat;
                 var long = latLong.lng;
-
                 // create new user object with details
                 var newUser = {
                     usertype: 'parent',
@@ -91,7 +157,7 @@ $(()=>{
                     cat: cat,
                     dog: dog,
                     latitude: lat,
-                    longitude: long 
+                    longitude: long
                 };
 
                 // send signup request with new user's details
@@ -130,6 +196,7 @@ $(()=>{
                         .done((userOnMap)=>{
                             console.log('this is map request response: ' + JSON.stringify(userOnMap));
                             console.log('run map function here'); // TO DO <===================================================
+                            initMap(userOnMap);
                         });
                     });
                 });
@@ -179,7 +246,7 @@ $(()=>{
                 address: address,
                 phone: phone,
                 latitude: lat,
-                longitude: long 
+                longitude: long
             };
 
             // send signup request with new user's details
@@ -219,6 +286,7 @@ $(()=>{
                     .done((userOnMap)=>{
                         console.log('this is map request response: ' + JSON.stringify(userOnMap));
                         console.log('run map function here'); // TO DO <===================================================
+                        initMap(userOnMap);
                     });
                 });
             });
@@ -274,13 +342,14 @@ $(()=>{
                 .done((userOnMap)=>{
                     console.log('this is map request response: ' + JSON.stringify(userOnMap));
                     console.log('run map function here'); // TO DO <===================================================
+                    initMap(userOnMap);
                 });
             });
         });
     });
 
     // logout
-    $('.btn-logout').on('click', ()=>{
+    $('.link-logout').on('click', ()=>{
 
         // send request to logout
         $.ajax({
@@ -290,6 +359,11 @@ $(()=>{
         .done((content)=>{
             $('body').html(content);
         });
+    });
+
+    // change pass-word
+    $('.link-setting').on('click', ()=>{
+        $('.user-setting').toggle();
     });
 
     // save new password

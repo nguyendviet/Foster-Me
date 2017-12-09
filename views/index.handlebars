@@ -1,23 +1,45 @@
-<!DOCTYPE HTML>
-<HTML>
+<ul class="nav justify-content-center">
+    <li class="nav-item">
+        <a class="navbar-brand" href="/"><img src="assets/img/catdog.png" class="catdog-icon"></a>
+    </li>
+    <li class="nav-item mt-1 link-login">
+        <a class="nav-link">Login</a>
+    </li>
+    <li class="nav-item mt-1 link-signup">
+        <a class="nav-link">Signup</a>
+    </li>
+</ul>
 
-<div class="jumbotron jumbotron-fluid">
+<div class="container text-center big-title"><h1 class="display-1">Foster Me!</h1></div>
 
+<div class="container text-center user-account">
 
+    <form class="py-1 logIn">
+        <h3>Login</h3>
+        <div class="login-notice"></div>
 
-</div> <!-- jumbotron -->
-<div class="container text-center">
-    <h1>Foster Me!</h1>
+        <fieldset class="form-group">
+            <input type="email" name="email" placeholder="Email" class="form-control email-login">
+        </fieldset>
+        <fieldset class="form-group">
+            <input type="password" name="password" placeholder="Password" class="form-control password-login">
+        </fieldset>
 
-    <h3>Sign up</h3>
-    <p>Are you a?</p>
-    <button type="button" class="btn btn-secondary btn-parent">Parent</button>
-    <button type="button" class="btn btn-secondary btn-shelter">Shelter</button>
+        <fieldset class="form-group">
+            <input type="hidden" name="signUp">
+            <input type="submit" name="logIn" value="Log In" class="btn btn-success btn-login">
+        </fieldset>
+    </form>
 
-    <form class="signUp">
+    <form class="py-1 signUp">
+        <h3>Signup</h3>
         <div class="signup-notice"></div>
-        <h4 class="parent-title">Parent Sign Up Form</h4>
-        <h4 class="shelter-title">Shelter Sign Up Form</h4>
+
+        <button type="button" class="btn btn-secondary btn-parent active">As a Parent</button>
+        <button type="button" class="btn btn-secondary btn-shelter">As a Shelter</button>
+
+        <h4 class="parent-title">Parent Signup Form</h4>
+        <h4 class="shelter-title">Shelter Signup Form</h4>
 
         <fieldset class="form-group">
             <input type="text" name="name" placeholder="Name" class="form-control name-signup">
@@ -49,53 +71,9 @@
             </div>
         </div>
 
-        <div class="form-check">
-            <label class="form-check-label">
-                <input type="checkbox" class="form-check-input" name="keepLoggedIn" value=1>
-                Keep me logged in
-            </label>
-        </div>
-
         <fieldset class="form-group">
-            <input type="hidden" name="signUp" value="1">
             <input type="submit" name="signUp" value="Sign Up" class="btn btn-success btn-signup-parent">
             <input type="submit" name="signUp" value="Sign Up" class="btn btn-success btn-signup-shelter">
         </fieldset>
     </form>
-
-    <hr/>
-    
-{{!-- login form --}}
-    <div>{{this.message}}</div>
-    <form class="logIn">
-        <h3>Log in</h3>
-        <div class="login-notice"></div>
-        <fieldset class="form-group">
-            <input type="email" name="email" placeholder="Email" class="form-control email-login">
-        </fieldset>
-        <fieldset class="form-group">
-            <input type="password" name="password" placeholder="Password" class="form-control password-login">
-        </fieldset>
-
-        <div class="form-check">
-            <label class="form-check-label">
-                <input type="checkbox" class="form-check-input" name="keepLoggedIn" value=1>
-                Keep me logged in
-            </label>
-        </div>
-        
-        <fieldset class="form-group">
-            <input type="hidden" name="signUp">
-            <input type="submit" name="logIn" value="Log In" class="btn btn-success btn-login">
-        </fieldset>
-    </form>
 </div>
-
-
-<div class= "footer">
-        <p><a class="footer-link" data-toggle="modal" data-target=".contact-us" href="#">Contact Us</a> | Copyright 2017. All Rights Reserved.</center></p>
-
-
-    </div>
-
-</HTML>

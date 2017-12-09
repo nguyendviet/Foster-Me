@@ -8,18 +8,20 @@ describe('Foster Me - shelter user', function() {
     it('should signup an animal shelter then logout', (done)=>{
         Nightmare({show: true})
         .goto('http://localhost:3000/')
-        .wait('.btn-shelter')
+        .wait('.link-signup')
+        .click('.link-signup')
         .wait(1000 * 2)
         .click('.btn-shelter')
-        .type('.name-signup', 'Meow Meow Hotel')
-        .type('.email-signup', 'meow@mmhotel.com')
-        .type('.password-signup', 'donotkillmeow')
-        .type('.address-signup', '2112 18 St NW #1, Washington, DC 20009')
-        .type('.phone-signup', '2026387470')
+        .type('.name-signup', 'Bark Bark Hotel')
+        .type('.email-signup', 'bark@example.com')
+        .type('.password-signup', 'shelterone')
+        .type('.address-signup', '1910 Sunderland Pl NW, Washington, DC 20036')
+        .type('.phone-signup', '2022897591')
         .click('.btn-signup-shelter')
-        .wait(1000 * 3)
-        .wait('.btn-logout')
-        .click('.btn-logout')
+        .wait('.link-logout')
+        .scrollTo(500, 0)
+        .wait(1000 * 5)
+        .click('.link-logout')
         .then(()=>{
             done();
         });
@@ -28,12 +30,15 @@ describe('Foster Me - shelter user', function() {
     it('should login as an animal shelter then delete account', (done)=>{
         Nightmare({show: true})
         .goto('http://localhost:3000/')
-        .wait('.email-login')
+        .wait('.link-login')
+        .click('.link-login')
         .wait(1000 * 2)
-        .type('.email-login', 'meow@mmhotel.com')
-        .type('.password-login', 'donotkillmeow')
+        .type('.email-login', 'bark@example.com')
+        .type('.password-login', 'shelterone')
         .click('.btn-login')
-        .wait('.btn-delete-account')
+        .wait('.link-setting')
+        .click('.link-setting')
+        .wait(1000 * 2)
         .click('.btn-delete-account')
         .wait(1000 * 2)
         .click('.btn-cancel-delete-account')
@@ -41,6 +46,7 @@ describe('Foster Me - shelter user', function() {
         .click('.btn-delete-account')
         .wait(1000 * 2)
         .click('.btn-confirm-delete-account')
+        .wait(1000 * 5)
         .then(()=>{
             done();
         });

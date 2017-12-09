@@ -33,8 +33,8 @@ db.sequelize.sync({force: true}).then(()=>{
             password: 'amehum',
             address: '1400 16th St NW #360, Washington, DC 20036',
             phone: '8002274645',
-            longitude: 38.909035,
-            latitude: -77.039242
+            latitude: 38.909035,
+            longitude: -77.039242
         },
         {
             name: 'City Dogs Rescue & City Kitties',
@@ -42,8 +42,8 @@ db.sequelize.sync({force: true}).then(()=>{
             password: 'citydog',
             address: '2121 Decatur Pl NW #3, Washington, DC 20008',
             phone: '2025677364',
-            longitude: 38.9135097,
-            latitude: -77.0501535
+            latitude: 38.9135097,
+            longitude: -77.0501535
         },
         {
             name: 'Wagtime',
@@ -51,8 +51,8 @@ db.sequelize.sync({force: true}).then(()=>{
             password: 'wagwag',
             address: '1232 9th St NW, Washington, DC 20001',
             phone: '2027890870',
-            longitude: 38.9065657,
-            latitude: -77.0265479
+            latitude: 38.9065657,
+            longitude: -77.0265479
         },
         {
             name: 'Humane Rescue Alliance',
@@ -60,8 +60,8 @@ db.sequelize.sync({force: true}).then(()=>{
             password: 'humresall',
             address: '1201 New York Ave NE, Washington, DC 20002',
             phone: '2025766664',
-            longitude: 38.9135668,
-            latitude: -76.9925556
+            latitude: 38.9135668,
+            longitude: -76.9925556
         }
     ]);
 
@@ -75,8 +75,8 @@ db.sequelize.sync({force: true}).then(()=>{
                 phone: '2022347387',
                 cat: false,
                 dog: false,
-                longitude: 38.9090194,
-                latitude: -77.0305502
+                latitude: 38.9090194,
+                longitude: -77.0305502
             },
             {
                 name: 'Pandora Angryladies',
@@ -86,8 +86,8 @@ db.sequelize.sync({force: true}).then(()=>{
                 phone: '2024837382',
                 cat: true,
                 dog: true,
-                longitude: 38.9109778,
-                latitude: -77.0390737
+                latitude: 38.9109778,
+                longitude: -77.0390737
             },
             {
                 name: 'Adam Morgan',
@@ -97,8 +97,8 @@ db.sequelize.sync({force: true}).then(()=>{
                 phone: '2026387470',
                 cat: true,
                 dog: false,
-                longitude: 38.9183334,
-                latitude: -77.0440605
+                latitude: 38.9183334,
+                longitude: -77.0440605
             },
             {
                 name: 'David Veternari',
@@ -108,8 +108,8 @@ db.sequelize.sync({force: true}).then(()=>{
                 phone: '2024662211',
                 cat: false,
                 dog: true,
-                longitude: 38.9094284,
-                latitude: -77.0480979
+                latitude: 38.9094284,
+                longitude: -77.0480979
             },
             {
                 name: 'Harry Horseman',
@@ -119,8 +119,8 @@ db.sequelize.sync({force: true}).then(()=>{
                 phone: '2029650500',
                 cat: true,
                 dog: false,
-                longitude: 38.9029249,
-                latitude: -77.0604903
+                latitude: 38.9029249,
+                longitude: -77.0604903
             },
             {
                 name: 'Cadie Arena',
@@ -130,8 +130,8 @@ db.sequelize.sync({force: true}).then(()=>{
                 phone: '2026283200',
                 cat: false,
                 dog: true,
-                longitude: 38.898129,
-                latitude: -77.0231517
+                latitude: 38.898129,
+                longitude: -77.0231517
             }
         ]);
     app.listen(PORT, ()=>{

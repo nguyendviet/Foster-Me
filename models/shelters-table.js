@@ -35,11 +35,11 @@ module.exports = (sequelize, DataTypes)=>{
               len: [3]
             }
         },
-        longitude: {
+        latitude: {
             type: DataTypes.DECIMAL(10, 8),
             // allowNull: false (show later when geomap ready)
         },
-        latitude: {
+        longitude: {
             type: DataTypes.DECIMAL(11, 8),
             // allowNull: false (show later when geomap ready)
         }

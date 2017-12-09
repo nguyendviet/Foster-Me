@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../models');
+var key = require('./keys.js');
 const saltRounds = 10;
 
 module.exports = (app)=>{
@@ -42,7 +43,7 @@ module.exports = (app)=>{
                             latitude: req.body.latitude
                         })
                         .then((result)=>{
-                            var token = jwt.sign({usertype: 'parent', id: result.id}, 'secret', {expiresIn: '1h'});
+                            var token = jwt.sign({usertype: 'parent', id: result.id}, key.secret, {expiresIn: '1h'});
                             // send token to client
                             res.send({token: token});
                         });
@@ -82,7 +83,7 @@ module.exports = (app)=>{
                             latitude: req.body.latitude
                         })
                         .then((result)=>{
-                            var token = jwt.sign({usertype: 'shelter', id: result.id}, 'secret', {expiresIn: '1h'});
+                            var token = jwt.sign({usertype: 'shelter', id: result.id}, key.secret, {expiresIn: '1h'});
                             // send token to client
                             res.send({token: token});
                         });
@@ -129,7 +130,7 @@ module.exports = (app)=>{
                             else {
                                 var id = shelter[0].id;
                                 var name = shelter[0].name;
-                                var token = jwt.sign({usertype: 'shelter', id: id}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
+                                var token = jwt.sign({usertype: 'shelter', id: id}, key.secret, {expiresIn: '1h'});
 
                                 // send token to client
                                 res.send({token: token, name: name});
@@ -152,7 +153,7 @@ module.exports = (app)=>{
                     else {
                         var id = parent[0].id;
                         var name = parent[0].name;
-                        var token = jwt.sign({usertype: 'parent', id: id}, 'secret', {expiresIn: '1h'}); // replace key 'secret' later
+                        var token = jwt.sign({usertype: 'parent', id: id}, key.secret, {expiresIn: '1h'});
 
                         // send token to client
                         res.send({token: token, name: name});
@@ -178,7 +179,7 @@ module.exports = (app)=>{
         }
         else {
             // decode token
-            jwt.verify(token, 'secret', (err, decoded)=>{
+            jwt.verify(token, key.secret, (err, decoded)=>{
                 if (err) {
                     res.status(401).redirect('/error');
                 };
@@ -235,7 +236,7 @@ module.exports = (app)=>{
         }
         else {
             // decode token
-            jwt.verify(token, 'secret', (err, decoded)=>{
+            jwt.verify(token, key.secret, (err, decoded)=>{
                 if (err) {
                     res.status(401).redirect('/error');
                 };

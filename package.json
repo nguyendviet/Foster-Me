@@ -1,37 +1,33 @@
 {
-  "name": "foster-me",
+  "name": "fm-safe",
   "version": "1.0.0",
-  "description": "an app connects animal shelters with potential foster parents",
+  "description": "",
   "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "express-handlebars": "^3.0.0",
+    "jsonwebtoken": "^8.1.0",
+    "mysql2": "^1.5.1",
+    "sequelize": "^4.27.0"
+  },
+  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nguyendviet/Foster-Me.git"
+    "url": "git+https://github.com/nguyendviet/fm-safe.git"
   },
-  "keywords": [
-    "gwu",
-    "project",
-    "fosterme"
-  ],
   "author": "Viet Nguyen",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nguyendviet/Foster-Me/issues"
+    "url": "https://github.com/nguyendviet/fm-safe/issues"
   },
-  "homepage": "https://github.com/nguyendviet/Foster-Me#readme",
-  "dependencies": {
-    "bcrypt": "^1.0.3",
-    "body-parser": "^1.18.2",
-    "chai": "^4.1.2",
-    "express": "^4.16.2",
-    "express-handlebars": "^3.0.0",
-    "jsonwebtoken": "^8.1.0",
-    "mocha": "^4.0.1",
-    "mysql2": "^1.5.0",
-    "nightmare": "^2.10.0",
-    "sequelize": "^4.22.8"
-  }
+  "homepage": "https://github.com/nguyendviet/fm-safe#readme"
 }

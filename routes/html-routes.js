@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const db = require('../models');
-const verify = require('./verify.js');
+var key = require('./keys.js');
 
 module.exports = (app)=>{
     app.get('/', (req, res)=>{
@@ -16,7 +16,7 @@ module.exports = (app)=>{
         }
         else {
             // decode token
-            jwt.verify(token, 'secret', (err, decoded)=>{
+            jwt.verify(token, key.secret, (err, decoded)=>{
                 if (err) {
                     res.status(401).redirect('/error');
                 };
@@ -32,14 +32,15 @@ module.exports = (app)=>{
                     })
                     .then((parent)=>{
                         var parentName = parent[0].name;
-                        db.Shelter.findAll({})
-                        .then((shelters)=>{
-                            var userObj = {
-                                name: parentName,
-                                list: shelters
-                            }
-                            res.render('user', userObj);
-                        });
+                        var parentLat = parent[0].latitude;
+                        var parentLong = parent[0].longitude;
+                        var userObj = {
+                            name: parentName,
+                            latitude: parentLat,
+                            longitude: parentLong,
+                        };
+
+                        res.render('user', userObj);
                     });
                 }
                 // user is a shelter
@@ -51,15 +52,15 @@ module.exports = (app)=>{
                     })
                     .then((shelter)=>{
                         var shelterName = shelter[0].name;
+                        var shelterLat = shelter[0].latitude;
+                        var shelterLong = shelter[0].longitude;
+                        var userObj = {
+                            name: shelterName,
+                            latitude: shelterLat,
+                            longitude: shelterLong,
+                        };
 
-                        db.Parent.findAll({})
-                        .then((parents)=>{
-                            var userObj = {
-                                name: shelterName,
-                                list: parents
-                            }
-                            res.render('user', userObj);
-                        });
+                        res.render('user', userObj);
                     });
                 }
             });
@@ -75,7 +76,7 @@ module.exports = (app)=>{
         }
         else {
             // decode token
-            jwt.verify(token, 'secret', (err, decoded)=>{
+            jwt.verify(token, key.secret, (err, decoded)=>{
                 if (err) {
                     res.status(401).redirect('/error');
                 };
