@@ -1,7 +1,5 @@
 # Foster Me
 
-George Washington Universtiy Group Project
-
 ### Contributors
 * Firas
 * Daryl
